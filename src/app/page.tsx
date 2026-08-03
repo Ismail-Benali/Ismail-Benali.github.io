@@ -6,7 +6,6 @@ import {
   Github,
   Mail,
   ExternalLink,
-  Terminal,
   Shield,
   Code2,
   Bot,
@@ -19,6 +18,7 @@ import {
   Globe,
   Lock,
   Cpu,
+  Terminal,
   BookOpen,
   Calendar,
   Clock,
@@ -27,34 +27,14 @@ import {
   Tag,
   Loader2,
   Image as ImageIcon,
-  X,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
-import ReactMarkdown from "react-markdown";
-import {
-  fetchBlogPosts,
-  fetchBlogPost,
-  type BlogPostMeta as BlogPostListItem,
-  type BlogPostFull,
-} from "@/lib/blog";
-
-/* ──────────────────────── Types ──────────────────────── */
-
-type PageView = "home" | "blog" | "post";
-
-/* ──────────────────────── Data ──────────────────────── */
-
-const NAV_ITEMS = [
-  { label: "Home", href: "#home", page: "home" as PageView },
-  { label: "About", href: "#about", page: "home" as PageView },
-  { label: "Projects", href: "#projects", page: "home" as PageView },
-  { label: "Blog", href: "", page: "blog" as PageView },
-  { label: "Skills", href: "#skills", page: "home" as PageView },
-  { label: "Contact", href: "#contact", page: "home" as PageView },
-];
+import { Navbar, type PageView } from "@/components/navbar";
+import { Footer } from "@/components/footer";
+import { fetchBlogPosts, type BlogPostMeta as BlogPostListItem } from "@/lib/blog";
 
 const PROJECTS = [
   {
@@ -113,153 +93,6 @@ const TYPING_WORDS = [
 ];
 
 /* ──────────────────────── Components ──────────────────────── */
-
-function Navbar({
-  currentView,
-  onNavigate,
-}: {
-  currentView: PageView;
-  onNavigate: (view: PageView, slug?: string) => void;
-}) {
-  const [scrolled, setScrolled] = useState(false);
-  const [mobileOpen, setMobileOpen] = useState(false);
-
-  useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 20);
-    window.addEventListener("scroll", onScroll);
-    return () => window.removeEventListener("scroll", onScroll);
-  }, []);
-
-  const handleNav = (page: PageView, href: string) => {
-    setMobileOpen(false);
-    if (page === "blog") {
-      onNavigate("blog");
-      window.scrollTo({ top: 0, behavior: "smooth" });
-    } else {
-      onNavigate("home");
-      const el = document.querySelector(href);
-      if (el) el.scrollIntoView({ behavior: "smooth" });
-    }
-  };
-
-  return (
-    <motion.nav
-      initial={{ y: -100 }}
-      animate={{ y: 0 }}
-      transition={{ duration: 0.6, ease: "easeOut" }}
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-        scrolled
-          ? "bg-background/80 backdrop-blur-xl border-b border-border shadow-lg"
-          : "bg-transparent"
-      }`}
-    >
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-16">
-          {/* Logo */}
-          <button
-            onClick={() => {
-              onNavigate("home");
-              window.scrollTo({ top: 0, behavior: "smooth" });
-            }}
-            className="flex items-center gap-2 group"
-          >
-            <div className="w-8 h-8 rounded-lg bg-primary/10 border border-primary/30 flex items-center justify-center group-hover:bg-primary/20 transition-colors">
-              <Terminal className="w-4 h-4 text-primary" />
-            </div>
-            <span className="font-mono font-bold text-sm text-foreground">
-              H3l!0s_T3k
-            </span>
-          </button>
-
-          {/* Desktop nav */}
-          <div className="hidden md:flex items-center gap-1">
-            {NAV_ITEMS.map((item) => (
-              <button
-                key={item.label}
-                onClick={() => handleNav(item.page, item.href)}
-                className={`px-3 py-2 text-sm transition-colors rounded-md hover:bg-primary/5 ${
-                  currentView !== "home" && item.page === "blog"
-                    ? "text-primary font-medium"
-                    : "text-muted-foreground hover:text-primary"
-                }`}
-              >
-                {item.label}
-              </button>
-            ))}
-            <a href="https://github.com/Ismail-Benali" target="_blank" rel="noopener noreferrer">
-              <Button variant="outline" size="sm" className="ml-2 gap-2">
-                <Github className="w-4 h-4" />
-                GitHub
-              </Button>
-            </a>
-          </div>
-
-          {/* Mobile hamburger */}
-          <button
-            className="md:hidden p-2 text-muted-foreground hover:text-primary transition-colors"
-            onClick={() => setMobileOpen(!mobileOpen)}
-            aria-label="Toggle menu"
-          >
-            <div className="w-5 h-5 flex flex-col justify-center gap-1">
-              <span
-                className={`block h-0.5 w-5 bg-current transition-all ${
-                  mobileOpen ? "rotate-45 translate-y-1.5" : ""
-                }`}
-              />
-              <span
-                className={`block h-0.5 w-5 bg-current transition-all ${
-                  mobileOpen ? "opacity-0" : ""
-                }`}
-              />
-              <span
-                className={`block h-0.5 w-5 bg-current transition-all ${
-                  mobileOpen ? "-rotate-45 -translate-y-1.5" : ""
-                }`}
-              />
-            </div>
-          </button>
-        </div>
-      </div>
-
-      {/* Mobile menu */}
-      {mobileOpen && (
-        <motion.div
-          initial={{ opacity: 0, height: 0 }}
-          animate={{ opacity: 1, height: "auto" }}
-          exit={{ opacity: 0, height: 0 }}
-          className="md:hidden bg-background/95 backdrop-blur-xl border-b border-border"
-        >
-          <div className="px-4 py-4 space-y-2">
-            {NAV_ITEMS.map((item) => (
-              <button
-                key={item.label}
-                onClick={() => handleNav(item.page, item.href)}
-                className={`block w-full text-left px-3 py-2 text-sm transition-colors rounded-md ${
-                  currentView !== "home" && item.page === "blog"
-                    ? "text-primary bg-primary/5"
-                    : "text-muted-foreground hover:text-primary hover:bg-primary/5"
-                }`}
-              >
-                {item.label}
-              </button>
-            ))}
-            <a
-              href="https://github.com/Ismail-Benali"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="block"
-            >
-              <Button variant="outline" size="sm" className="w-full gap-2 mt-2">
-                <Github className="w-4 h-4" />
-                GitHub Profile
-              </Button>
-            </a>
-          </div>
-        </motion.div>
-      )}
-    </motion.nav>
-  );
-}
 
 function HeroSection() {
   const [displayText, setDisplayText] = useState("");
@@ -634,10 +467,8 @@ function ProjectsSection() {
 
 function BlogPreviewSection({
   onViewAll,
-  onOpenPost,
 }: {
   onViewAll: () => void;
-  onOpenPost: (slug: string) => void;
 }) {
   const ref = useRef(null);
   const inView = useInView(ref, { once: true, margin: "-100px" });
@@ -699,11 +530,12 @@ function BlogPreviewSection({
                   animate={inView ? { y: 0, opacity: 1 } : {}}
                   transition={{ duration: 0.4, delay: index * 0.1 }}
                 >
-                  <Card
-                    className="h-full bg-card/50 border-border/50 hover:border-primary/30 transition-all duration-300 hover:shadow-lg hover:shadow-primary/5 hover:-translate-y-1 cursor-pointer group overflow-hidden"
-                    onClick={() => onOpenPost(post.slug)}
+                  <Link
+                    href={`/posts/${post.slug}`}
+                    className="block h-full"
                   >
-                    {/* Cover image */}
+                    <Card className="h-full bg-card/50 border-border/50 hover:border-primary/30 transition-all duration-300 hover:shadow-lg hover:shadow-primary/5 hover:-translate-y-1 cursor-pointer group overflow-hidden">
+                      {/* Cover image */}
                     <div className="relative aspect-video overflow-hidden">
                       {post.coverImage ? (
                         <img
@@ -771,7 +603,8 @@ function BlogPreviewSection({
                         <ArrowRight className="w-3 h-3 opacity-0 group-hover:opacity-100 transition-opacity text-primary" />
                       </div>
                     </CardContent>
-                  </Card>
+                    </Card>
+                  </Link>
                 </motion.div>
               ))}
             </div>
@@ -802,13 +635,7 @@ function BlogPreviewSection({
 
 /* ──────────────────────── Blog Page ──────────────────────── */
 
-function BlogPage({
-  onOpenPost,
-  onBack,
-}: {
-  onOpenPost: (slug: string) => void;
-  onBack: () => void;
-}) {
+function BlogPage({ onBack }: { onBack: () => void }) {
   const [posts, setPosts] = useState<BlogPostListItem[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -873,10 +700,11 @@ function BlogPage({
             transition={{ duration: 0.5, delay: 0.1 }}
             className="mb-10"
           >
-            <Card
-              className="bg-card/50 border-border/50 hover:border-primary/30 transition-all duration-300 hover:shadow-lg hover:shadow-primary/5 cursor-pointer group overflow-hidden"
-              onClick={() => onOpenPost(posts[0].slug)}
+            <Link
+              href={`/posts/${posts[0].slug}`}
+              className="block"
             >
+              <Card className="bg-card/50 border-border/50 hover:border-primary/30 transition-all duration-300 hover:shadow-lg hover:shadow-primary/5 cursor-pointer group overflow-hidden">
               <div className="grid grid-cols-1 md:grid-cols-2">
                 {/* Cover image */}
                 <div className="relative aspect-video md:aspect-auto overflow-hidden">
@@ -942,9 +770,10 @@ function BlogPage({
                       </div>
                     )}
                   </div>
-                </CardContent>
-              </div>
-            </Card>
+                  </CardContent>
+                </div>
+              </Card>
+              </Link>
           </motion.div>
         )}
 
@@ -967,10 +796,11 @@ function BlogPage({
                 animate={{ y: 0, opacity: 1 }}
                 transition={{ duration: 0.4, delay: 0.1 + index * 0.08 }}
               >
-                <Card
-                  className="h-full bg-card/50 border-border/50 hover:border-primary/30 transition-all duration-300 hover:shadow-lg hover:shadow-primary/5 hover:-translate-y-1 cursor-pointer group overflow-hidden"
-                  onClick={() => onOpenPost(post.slug)}
+                <Link
+                  href={`/posts/${post.slug}`}
+                  className="block h-full"
                 >
+                  <Card className="h-full bg-card/50 border-border/50 hover:border-primary/30 transition-all duration-300 hover:shadow-lg hover:shadow-primary/5 hover:-translate-y-1 cursor-pointer group overflow-hidden">
                   {/* Card cover image */}
                   <div className="relative aspect-video overflow-hidden">
                     {post.coverImage ? (
@@ -1039,7 +869,8 @@ function BlogPage({
                       <ArrowRight className="w-3.5 h-3.5 opacity-0 group-hover:opacity-100 transition-opacity text-primary" />
                     </div>
                   </CardContent>
-                </Card>
+                  </Card>
+                </Link>
               </motion.div>
             ))}
           </div>
@@ -1069,219 +900,6 @@ function BlogPage({
   );
 }
 
-/* ──────────────────────── Blog Post Detail Page ──────────────────────── */
-
-function BlogPostPage({
-  slug,
-  onBack,
-}: {
-  slug: string;
-  onBack: () => void;
-}) {
-  const [post, setPost] = useState<BlogPostFull | null>(null);
-  const [loading, setLoading] = useState(true);
-  const [lightboxImg, setLightboxImg] = useState<string | null>(null);
-
-  useEffect(() => {
-    window.scrollTo({ top: 0 });
-    async function loadPost() {
-      try {
-        const data = await fetchBlogPost(slug);
-        setPost(data);
-      } catch {
-        // silently fail
-      } finally {
-        setLoading(false);
-      }
-    }
-    loadPost();
-  }, [slug]);
-
-  if (loading) {
-    return (
-      <div className="min-h-screen pt-24 flex items-center justify-center">
-        <Loader2 className="w-8 h-8 text-primary animate-spin" />
-      </div>
-    );
-  }
-
-  if (!post) {
-    return (
-      <div className="min-h-screen pt-24 flex flex-col items-center justify-center">
-        <p className="text-muted-foreground text-lg mb-4">Post not found.</p>
-        <Button variant="outline" onClick={onBack} className="gap-2">
-          <ArrowLeft className="w-4 h-4" />
-          Back to Blog
-        </Button>
-      </div>
-    );
-  }
-
-  return (
-    <div className="min-h-screen pt-24 pb-20">
-      <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Back button */}
-        <motion.div
-          initial={{ y: 20, opacity: 0 }}
-          animate={{ y: 0, opacity: 1 }}
-          className="mb-8"
-        >
-          <Button
-            variant="ghost"
-            size="sm"
-            onClick={onBack}
-            className="gap-2 text-muted-foreground hover:text-primary"
-          >
-            <ArrowLeft className="w-4 h-4" />
-            Back to Blog
-          </Button>
-        </motion.div>
-
-        {/* Meta */}
-        <motion.div
-          initial={{ y: 20, opacity: 0 }}
-          animate={{ y: 0, opacity: 1 }}
-          transition={{ delay: 0.1 }}
-        >
-          <div className="flex flex-wrap gap-2 mb-4">
-            {post.tags.map((tag) => (
-              <Badge
-                key={tag}
-                variant="secondary"
-                className="text-xs font-mono bg-primary/5 text-primary border-primary/20"
-              >
-                <Tag className="w-2.5 h-2.5 mr-1" />
-                {tag}
-              </Badge>
-            ))}
-          </div>
-
-          <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-4">
-            {post.title}
-          </h1>
-
-          <div className="flex items-center gap-4 text-sm text-muted-foreground mb-6">
-            {post.date && (
-              <div className="flex items-center gap-1.5">
-                <Calendar className="w-4 h-4" />
-                <span>
-                  {new Date(post.date).toLocaleDateString("en-US", {
-                    month: "long",
-                    day: "numeric",
-                    year: "numeric",
-                  })}
-                </span>
-              </div>
-            )}
-            <div className="flex items-center gap-1.5">
-              <Clock className="w-4 h-4" />
-              <span>{post.readTime}</span>
-            </div>
-          </div>
-        </motion.div>
-
-        <Separator className="mb-8 bg-border/50" />
-
-        {/* Cover image */}
-        {post.coverImage && (
-          <motion.div
-            initial={{ y: 20, opacity: 0 }}
-            animate={{ y: 0, opacity: 1 }}
-            transition={{ delay: 0.15 }}
-            className="mb-8 rounded-xl overflow-hidden border border-border/50"
-          >
-            <img
-              src={post.coverImage}
-              alt={`Cover - ${post.title}`}
-              className="w-full object-cover max-h-[400px] cursor-pointer hover:opacity-90 transition-opacity"
-              onClick={() => setLightboxImg(post.coverImage)}
-            />
-          </motion.div>
-        )}
-
-        {/* Content */}
-        <motion.div
-          initial={{ y: 20, opacity: 0 }}
-          animate={{ y: 0, opacity: 1 }}
-          transition={{ delay: 0.2 }}
-          className="prose prose-invert prose-sm sm:prose-base max-w-none
-            prose-headings:text-foreground prose-headings:font-semibold
-            prose-h2:text-xl prose-h2:mt-10 prose-h2:mb-4
-            prose-h3:text-lg prose-h3:mt-8 prose-h3:mb-3
-            prose-p:text-muted-foreground prose-p:leading-relaxed
-            prose-a:text-primary prose-a:no-underline hover:prose-a:underline
-            prose-strong:text-foreground
-            prose-code:text-primary prose-code:bg-primary/10 prose-code:px-1.5 prose-code:py-0.5 prose-code:rounded prose-code:text-sm prose-code:before:content-[''] prose-code:after:content-['']
-            prose-pre:bg-secondary prose-pre:border prose-pre:border-border
-            prose-blockquote:border-primary prose-blockquote:text-muted-foreground
-            prose-li:text-muted-foreground
-            prose-table:border-border prose-th:border-border prose-td:border-border
-            prose-hr:border-border
-            prose-img:rounded-lg prose-img:cursor-pointer prose-img:hover:opacity-90"
-        >
-          <ReactMarkdown>{post.content}</ReactMarkdown>
-        </motion.div>
-
-        {/* Post images gallery */}
-        {post.images.length > 0 && (
-          <motion.div
-            initial={{ y: 20, opacity: 0 }}
-            animate={{ y: 0, opacity: 1 }}
-            transition={{ delay: 0.3 }}
-            className="mt-12"
-          >
-            <Separator className="mb-8 bg-border/50" />
-            <h3 className="text-lg font-semibold mb-4 flex items-center gap-2">
-              <ImageIcon className="w-5 h-5 text-primary" />
-              Images
-            </h3>
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              {post.images.map((img, i) => (
-                <div
-                  key={i}
-                  className="rounded-lg overflow-hidden border border-border/50 cursor-pointer hover:border-primary/30 transition-colors group"
-                  onClick={() => setLightboxImg(img)}
-                >
-                  <img
-                    src={img}
-                    alt={`Image ${i + 1} - ${post.title}`}
-                    className="w-full object-cover aspect-video group-hover:scale-105 transition-transform duration-300"
-                  />
-                </div>
-              ))}
-            </div>
-          </motion.div>
-        )}
-      </div>
-
-      {/* Lightbox */}
-      {lightboxImg && (
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          exit={{ opacity: 0 }}
-          className="fixed inset-0 z-[60] bg-background/90 backdrop-blur-xl flex items-center justify-center p-4"
-          onClick={() => setLightboxImg(null)}
-        >
-          <button
-            className="absolute top-4 right-4 p-2 rounded-full bg-card/80 border border-border hover:bg-card transition-colors"
-            onClick={() => setLightboxImg(null)}
-          >
-            <X className="w-5 h-5" />
-          </button>
-          <motion.img
-            initial={{ scale: 0.9, opacity: 0 }}
-            animate={{ scale: 1, opacity: 1 }}
-            src={lightboxImg}
-            alt="Full view"
-            className="max-w-full max-h-[85vh] object-contain rounded-lg"
-            onClick={(e) => e.stopPropagation()}
-          />
-        </motion.div>
-      )}
-    </div>
-  );
-}
 
 function SkillsSection() {
   const ref = useRef(null);
@@ -1455,58 +1073,13 @@ function ContactSection() {
   );
 }
 
-function Footer() {
-  return (
-    <footer className="border-t border-border/50 py-8">
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
-          <div className="flex items-center gap-2 text-sm text-muted-foreground">
-            <Terminal className="w-4 h-4 text-primary" />
-            <span className="font-mono">
-              &copy; {new Date().getFullYear()} H3l!0s_T3k
-            </span>
-          </div>
-          <div className="flex items-center gap-4">
-            <a
-              href="https://github.com/Ismail-Benali"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-muted-foreground hover:text-primary transition-colors"
-              aria-label="GitHub"
-            >
-              <Github className="w-5 h-5" />
-            </a>
-            <a
-              href="mailto:ismail.benali@proton.me"
-              className="text-muted-foreground hover:text-primary transition-colors"
-              aria-label="Email"
-            >
-              <Mail className="w-5 h-5" />
-            </a>
-          </div>
-        </div>
-        <p className="text-center text-xs text-muted-foreground/50 mt-4">
-          Built with Next.js &amp; deployed on GitHub Pages
-        </p>
-      </div>
-    </footer>
-  );
-}
-
 /* ──────────────────────── Main Page ──────────────────────── */
 
 export default function Home() {
   const [view, setView] = useState<PageView>("home");
-  const [postSlug, setPostSlug] = useState<string | null>(null);
 
-  const navigate = (newView: PageView, slug?: string) => {
-    if (newView === "post" && slug) {
-      setPostSlug(slug);
-      setView("post");
-    } else {
-      setPostSlug(null);
-      setView(newView);
-    }
+  const navigate = (newView: PageView) => {
+    setView(newView);
   };
 
   return (
@@ -1517,26 +1090,12 @@ export default function Home() {
           <HeroSection />
           <AboutSection />
           <ProjectsSection />
-          <BlogPreviewSection
-            onViewAll={() => navigate("blog")}
-            onOpenPost={(slug) => navigate("post", slug)}
-          />
+          <BlogPreviewSection onViewAll={() => navigate("blog")} />
           <SkillsSection />
           <ContactSection />
         </main>
       )}
-      {view === "blog" && (
-        <BlogPage
-          onOpenPost={(slug) => navigate("post", slug)}
-          onBack={() => navigate("home")}
-        />
-      )}
-      {view === "post" && postSlug && (
-        <BlogPostPage
-          slug={postSlug}
-          onBack={() => navigate("blog")}
-        />
-      )}
+      {view === "blog" && <BlogPage onBack={() => navigate("home")} />}
       <Footer />
     </div>
   );
