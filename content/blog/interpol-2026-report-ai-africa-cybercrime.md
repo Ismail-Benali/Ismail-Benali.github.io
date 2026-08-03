@@ -3,8 +3,8 @@ title: "INTERPOL's 2026 Report: AI Now Powers Over Half of Africa's Cybercrime"
 date: 2026-08-03
 description: "INTERPOL's 2026 African Cyberthreat Assessment reveals that 55% of cybercrime in Africa is now AI-enabled, with losses doubling to USD 484 million and scam centres spreading across the continent."
 tags: ["Cybersecurity", "AI", "INTERPOL", "Africa"]
-coverImage: ""
-images: []
+coverImage: "cover.png"
+images: ["cover.png"]
 ---
 
 # INTERPOL's 2026 Report: AI Now Powers Over Half of Africa's Cybercrime
