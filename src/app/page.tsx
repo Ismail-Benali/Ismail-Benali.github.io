@@ -78,12 +78,18 @@ const PROJECTS = [
 ];
 
 const SKILLS = [
-  { name: "Python", level: 90, icon: Terminal },
-  { name: "Cybersecurity", level: 85, icon: Shield },
-  { name: "OSINT", level: 80, icon: ScanSearch },
-  { name: "JavaScript", level: 75, icon: Code2 },
-  { name: "Linux", level: 82, icon: Terminal },
-  { name: "Networking", level: 78, icon: Globe },
+  { name: "Python", category: "Language", icon: Terminal },
+  { name: "Bash / Shell", category: "Scripting", icon: Terminal },
+  { name: "Cybersecurity", category: "Security", icon: Shield },
+  { name: "OSINT & Recon", category: "Recon", icon: ScanSearch },
+  { name: "Wireshark", category: "Analysis", icon: Globe },
+  { name: "Burp Suite", category: "Web Security", icon: Lock },
+  { name: "REST APIs", category: "Backend", icon: Code2 },
+  { name: "Linux / UNIX", category: "Systems", icon: Terminal },
+  { name: "Git & GitHub", category: "DevOps", icon: FolderGit2 },
+  { name: "Docker", category: "DevOps", icon: Cpu },
+  { name: "Network Security", category: "Security", icon: Shield },
+  { name: "TypeScript", category: "Language", icon: Code2 },
 ];
 
 const TYPING_WORDS = [
@@ -953,54 +959,36 @@ function SkillsSection() {
         >
           <Badge variant="secondary" className="mb-4 text-primary border-primary/30">
             <Zap className="w-3 h-3 mr-1" />
-            Skills
+            Skills & Tools
           </Badge>
           <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-4">
             Technical <span className="text-gradient">Expertise</span>
           </h2>
           <p className="text-muted-foreground max-w-2xl mx-auto text-lg">
-            Skills and technologies I work with on a daily basis, constantly
-            expanding my knowledge in the field of cybersecurity and software
-            development.
+            Technologies, frameworks, and security tools I work with on a daily basis.
           </p>
         </motion.div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-4xl mx-auto">
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 max-w-5xl mx-auto">
           {SKILLS.map((skill, index) => (
             <motion.div
               key={skill.name}
-              initial={{ x: index % 2 === 0 ? -40 : 40, opacity: 0 }}
-              animate={inView ? { x: 0, opacity: 1 } : {}}
-              transition={{ duration: 0.5, delay: index * 0.1 }}
+              initial={{ y: 20, opacity: 0 }}
+              animate={inView ? { y: 0, opacity: 1 } : {}}
+              transition={{ duration: 0.4, delay: index * 0.05 }}
             >
-              <Card className="bg-card/50 border-border/50 hover:border-primary/30 transition-all duration-300">
-                <CardContent className="p-4 sm:p-6">
-                  <div className="flex items-center justify-between mb-3">
-                    <div className="flex items-center gap-3">
-                      <div className="w-8 h-8 rounded-lg bg-primary/10 flex items-center justify-center">
-                        <skill.icon className="w-4 h-4 text-primary" />
-                      </div>
-                      <span className="font-medium text-sm sm:text-base">
-                        {skill.name}
-                      </span>
-                    </div>
-                    <span className="text-xs font-mono text-muted-foreground">
-                      {skill.level}%
-                    </span>
+              <Card className="h-full bg-card/50 border-border/50 hover:border-primary/40 transition-all duration-300 hover:shadow-lg hover:shadow-primary/5 group cursor-default">
+                <CardContent className="p-4 sm:p-5 flex items-center gap-3.5">
+                  <div className="w-10 h-10 rounded-xl bg-primary/10 border border-primary/20 flex items-center justify-center shrink-0 group-hover:bg-primary/20 transition-colors">
+                    <skill.icon className="w-5 h-5 text-primary" />
                   </div>
-                  <div className="w-full h-2 rounded-full bg-secondary overflow-hidden">
-                    <motion.div
-                      initial={{ width: 0 }}
-                      animate={
-                        inView ? { width: `${skill.level}%` } : { width: 0 }
-                      }
-                      transition={{
-                        duration: 1,
-                        delay: 0.3 + index * 0.1,
-                        ease: "easeOut",
-                      }}
-                      className="h-full rounded-full bg-gradient-to-r from-primary to-cyan-500"
-                    />
+                  <div>
+                    <h3 className="font-semibold text-sm sm:text-base group-hover:text-primary transition-colors">
+                      {skill.name}
+                    </h3>
+                    <span className="text-xs text-muted-foreground font-mono">
+                      {skill.category}
+                    </span>
                   </div>
                 </CardContent>
               </Card>
