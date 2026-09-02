@@ -10,12 +10,10 @@ import {
   Eye,
   Image as ImageIcon,
   Loader2,
-  Share2,
   Copy,
   Check,
   Tag,
   X,
-  MessageSquare,
   Send,
   Linkedin,
   Twitter,
@@ -54,10 +52,9 @@ export function BlogPostPage({
           const storageKey = `post_views_${slug}`;
           let currentViews = parseInt(localStorage.getItem(storageKey) || "0", 10);
           if (currentViews === 0) {
-            // Generate deterministic base views from slug length + random 120-450
             currentViews = Math.floor(slug.length * 45 + 180);
           }
-          currentViews += 1; // Increment on visit
+          currentViews += 1;
           localStorage.setItem(storageKey, currentViews.toString());
           setViews(currentViews);
         }
@@ -119,7 +116,7 @@ export function BlogPostPage({
   }
 
   return (
-    <div className="min-h-screen pt-24 pb-20">
+    <div className="min-h-screen pt-24 pb-24">
       <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Back button */}
         <motion.div
@@ -180,23 +177,23 @@ export function BlogPostPage({
               <Badge
                 key={tag}
                 variant="secondary"
-                className="text-xs font-mono bg-primary/5 text-primary border-primary/20"
+                className="text-xs font-mono bg-primary/10 text-primary border-primary/20 px-2.5 py-0.5"
               >
-                <Tag className="w-2.5 h-2.5 mr-1" />
+                <Tag className="w-3 h-3 mr-1.5" />
                 {tag}
               </Badge>
             ))}
           </div>
 
-          <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-4 tracking-tight">
+          <h1 className="text-3xl sm:text-4xl md:text-5xl font-extrabold mb-6 tracking-tight leading-tight text-foreground">
             {post.title}
           </h1>
 
-          <div className="flex flex-wrap items-center gap-4 text-sm text-muted-foreground mb-6">
+          <div className="flex flex-wrap items-center gap-6 text-sm text-muted-foreground mb-8 pb-4 border-b border-border/50">
             {post.date && (
-              <div className="flex items-center gap-1.5">
-                <Calendar className="w-4 h-4 text-primary/70" />
-                <span>
+              <div className="flex items-center gap-2">
+                <Calendar className="w-4 h-4 text-primary" />
+                <span className="font-medium">
                   {new Date(post.date).toLocaleDateString("en-US", {
                     month: "long",
                     day: "numeric",
@@ -205,18 +202,16 @@ export function BlogPostPage({
                 </span>
               </div>
             )}
-            <div className="flex items-center gap-1.5">
-              <Clock className="w-4 h-4 text-primary/70" />
-              <span>{post.readTime}</span>
+            <div className="flex items-center gap-2">
+              <Clock className="w-4 h-4 text-primary" />
+              <span className="font-medium">{post.readTime}</span>
             </div>
-            <div className="flex items-center gap-1.5">
-              <Eye className="w-4 h-4 text-primary/70" />
-              <span>{views > 0 ? `${views} views` : "Loading..."}</span>
+            <div className="flex items-center gap-2">
+              <Eye className="w-4 h-4 text-primary" />
+              <span className="font-medium">{views > 0 ? `${views} views` : "Loading..."}</span>
             </div>
           </div>
         </motion.div>
-
-        <Separator className="mb-8 bg-border/50" />
 
         {/* Cover image */}
         {post.coverImage && (
@@ -224,36 +219,37 @@ export function BlogPostPage({
             initial={{ y: 20, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
             transition={{ delay: 0.15 }}
-            className="mb-8 rounded-xl overflow-hidden border border-border/50 shadow-lg shadow-primary/5"
+            className="mb-10 rounded-2xl overflow-hidden border border-border/60 shadow-2xl shadow-primary/10"
           >
             <img
               src={post.coverImage}
               alt={`Cover - ${post.title}`}
-              className="w-full object-cover max-h-[400px] cursor-pointer hover:scale-[1.02] transition-transform duration-300"
+              className="w-full object-cover max-h-[450px] cursor-pointer hover:scale-[1.01] transition-transform duration-500"
               onClick={() => setLightboxImg(post.coverImage)}
             />
           </motion.div>
         )}
 
-        {/* Content */}
+        {/* Content with Enhanced Typography */}
         <motion.div
           initial={{ y: 20, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
           transition={{ delay: 0.2 }}
-          className="prose prose-invert prose-sm sm:prose-base max-w-none
-            prose-headings:text-foreground prose-headings:font-semibold
-            prose-h2:text-xl prose-h2:mt-10 prose-h2:mb-4
-            prose-h3:text-lg prose-h3:mt-8 prose-h3:mb-3
-            prose-p:text-muted-foreground prose-p:leading-relaxed
-            prose-a:text-primary prose-a:no-underline hover:prose-a:underline
-            prose-strong:text-foreground
-            prose-code:text-primary prose-code:bg-primary/10 prose-code:px-1.5 prose-code:py-0.5 prose-code:rounded prose-code:text-sm prose-code:before:content-[''] prose-code:after:content-['']
-            prose-pre:bg-secondary prose-pre:border prose-pre:border-border
-            prose-blockquote:border-primary prose-blockquote:text-muted-foreground
-            prose-li:text-muted-foreground
+          className="prose prose-invert prose-base sm:prose-lg max-w-none
+            prose-headings:text-foreground prose-headings:font-bold prose-headings:tracking-tight
+            prose-h1:text-3xl sm:prose-h1:text-4xl prose-h1:mb-6 prose-h1:mt-10
+            prose-h2:text-2xl sm:prose-h2:text-3xl prose-h2:mt-14 prose-h2:mb-6 prose-h2:border-b prose-h2:border-border/60 prose-h2:pb-3
+            prose-h3:text-xl sm:prose-h3:text-2xl prose-h3:mt-10 prose-h3:mb-4
+            prose-p:text-foreground/90 prose-p:text-base sm:prose-p:text-lg prose-p:leading-relaxed prose-p:mb-6
+            prose-a:text-primary prose-a:font-semibold prose-a:no-underline hover:prose-a:underline
+            prose-strong:text-foreground prose-strong:font-bold
+            prose-code:text-primary prose-code:bg-secondary prose-code:px-2 prose-code:py-1 prose-code:rounded-md prose-code:text-sm prose-code:before:content-[''] prose-code:after:content-['']
+            prose-pre:bg-card prose-pre:border prose-pre:border-border/80 prose-pre:rounded-2xl prose-pre:shadow-2xl prose-pre:p-6
+            prose-blockquote:border-l-4 prose-blockquote:border-primary prose-blockquote:bg-primary/5 prose-blockquote:px-6 prose-blockquote:py-5 prose-blockquote:rounded-r-2xl prose-blockquote:text-foreground/90 prose-blockquote:italic prose-blockquote:my-8
+            prose-li:text-foreground/90 prose-li:my-2 prose-li:text-base sm:prose-li:text-lg
             prose-table:border-border prose-th:border-border prose-td:border-border
-            prose-hr:border-border
-            prose-img:rounded-lg prose-img:cursor-pointer prose-img:hover:opacity-90"
+            prose-hr:border-border/80 prose-hr:my-12
+            prose-img:rounded-xl prose-img:shadow-2xl prose-img:cursor-pointer prose-img:hover:opacity-90 prose-img:my-8"
         >
           <ReactMarkdown>{post.content}</ReactMarkdown>
         </motion.div>
@@ -264,24 +260,24 @@ export function BlogPostPage({
             initial={{ y: 20, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
             transition={{ delay: 0.3 }}
-            className="mt-12"
+            className="mt-16"
           >
             <Separator className="mb-8 bg-border/50" />
-            <h3 className="text-lg font-semibold mb-4 flex items-center gap-2">
-              <ImageIcon className="w-5 h-5 text-primary" />
+            <h3 className="text-xl font-bold mb-6 flex items-center gap-2 text-foreground">
+              <ImageIcon className="w-6 h-6 text-primary" />
               Gallery Images
             </h3>
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
               {post.images.map((img, i) => (
                 <div
                   key={i}
-                  className="rounded-lg overflow-hidden border border-border/50 cursor-pointer hover:border-primary/40 transition-colors group shadow-md"
+                  className="rounded-xl overflow-hidden border border-border/60 cursor-pointer hover:border-primary/50 transition-colors group shadow-lg"
                   onClick={() => setLightboxImg(img)}
                 >
                   <img
                     src={img}
                     alt={`Image ${i + 1} - ${post.title}`}
-                    className="w-full object-cover aspect-video group-hover:scale-105 transition-transform duration-300"
+                    className="w-full object-cover aspect-video group-hover:scale-105 transition-transform duration-500"
                   />
                 </div>
               ))}
@@ -294,29 +290,29 @@ export function BlogPostPage({
           initial={{ y: 20, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
           transition={{ delay: 0.35 }}
-          className="mt-16"
+          className="mt-20"
         >
-          <Separator className="mb-8 bg-border/50" />
+          <Separator className="mb-10 bg-border/50" />
           
-          <div className="bg-card border border-border/60 rounded-xl p-6 sm:p-8 flex flex-col sm:flex-row items-center justify-between gap-6 shadow-xl shadow-primary/5">
+          <div className="bg-card border border-border/80 rounded-2xl p-6 sm:p-10 flex flex-col sm:flex-row items-center justify-between gap-6 shadow-2xl shadow-primary/10">
             <div>
-              <h4 className="font-semibold text-foreground text-lg mb-1">Enjoyed this article?</h4>
-              <p className="text-sm text-muted-foreground">Share it with your network or fellow developers.</p>
+              <h4 className="font-bold text-foreground text-xl mb-2">Enjoyed this article?</h4>
+              <p className="text-muted-foreground text-base">Share it with your network or fellow developers.</p>
             </div>
-            <div className="flex flex-wrap items-center gap-2">
-              <Button variant="outline" size="sm" onClick={handleCopyLink} className="gap-2">
+            <div className="flex flex-wrap items-center gap-3">
+              <Button variant="outline" onClick={handleCopyLink} className="gap-2 font-medium">
                 {copied ? <Check className="w-4 h-4 text-green-500" /> : <Copy className="w-4 h-4" />}
                 {copied ? "Copied" : "Copy Link"}
               </Button>
-              <Button variant="outline" size="sm" onClick={shareOnTwitter} className="gap-2">
+              <Button variant="outline" onClick={shareOnTwitter} className="gap-2 font-medium">
                 <Twitter className="w-4 h-4" />
                 Twitter
               </Button>
-              <Button variant="outline" size="sm" onClick={shareOnLinkedIn} className="gap-2">
+              <Button variant="outline" onClick={shareOnLinkedIn} className="gap-2 font-medium">
                 <Linkedin className="w-4 h-4" />
                 LinkedIn
               </Button>
-              <Button variant="outline" size="sm" onClick={shareOnWhatsApp} className="gap-2">
+              <Button variant="outline" onClick={shareOnWhatsApp} className="gap-2 font-medium">
                 <Send className="w-4 h-4" />
                 WhatsApp
               </Button>
@@ -335,17 +331,17 @@ export function BlogPostPage({
           onClick={() => setLightboxImg(null)}
         >
           <button
-            className="absolute top-4 right-4 p-2 rounded-full bg-card/80 border border-border hover:bg-card transition-colors"
+            className="absolute top-4 right-4 p-2.5 rounded-full bg-card/80 border border-border hover:bg-card transition-colors"
             onClick={() => setLightboxImg(null)}
           >
-            <X className="w-5 h-5" />
+            <X className="w-6 h-6" />
           </button>
           <motion.img
             initial={{ scale: 0.9, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
             src={lightboxImg}
             alt="Full view"
-            className="max-w-full max-h-[85vh] object-contain rounded-lg shadow-2xl"
+            className="max-w-full max-h-[85vh] object-contain rounded-xl shadow-2xl"
             onClick={(e) => e.stopPropagation()}
           />
         </motion.div>
