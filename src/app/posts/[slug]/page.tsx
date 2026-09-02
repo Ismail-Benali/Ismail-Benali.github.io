@@ -5,9 +5,13 @@ import PostRoute from "./post-route";
 export async function generateStaticParams() {
   try {
     const posts = await fetchBlogPosts();
-    return posts.map((post) => ({ slug: post.slug }));
+    const slugs = posts.map((post) => ({ slug: post.slug }));
+    if (slugs.length === 0) {
+      return [{ slug: "interpol-2026-report-ai-africa-cybercrime" }];
+    }
+    return slugs;
   } catch {
-    return [];
+    return [{ slug: "interpol-2026-report-ai-africa-cybercrime" }];
   }
 }
 
