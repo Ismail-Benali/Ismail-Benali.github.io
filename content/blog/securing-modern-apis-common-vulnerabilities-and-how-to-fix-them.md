@@ -3,7 +3,7 @@ title: "Securing Modern APIs: Common Vulnerabilities and How to Fix Them"
 date: 2026-09-02
 description: "A comprehensive technical guide to the OWASP API Security Top 10, exploring critical vulnerabilities like BOLA and Broken Authentication, along with robust mitigation strategies."
 tags: ["Cybersecurity", "API", "Web Security", "Development"]
-coverImage: ""
+coverImage: "cover.png"
 images: []
 ---
 
