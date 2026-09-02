@@ -280,25 +280,25 @@ export function BlogPostPage({
         >
           <Separator className="mb-10 bg-border/50" />
           
-          <div className="bg-card border border-border/80 rounded-2xl p-6 sm:p-10 flex flex-col sm:flex-row items-center justify-between gap-6 shadow-2xl shadow-primary/10">
+          <div className="bg-card border border-border/80 rounded-2xl p-6 sm:p-10 flex flex-col gap-6 shadow-2xl shadow-primary/10">
             <div>
               <h4 className="font-bold text-foreground text-xl mb-2">Enjoyed this article?</h4>
               <p className="text-muted-foreground text-base">Share it with your network or fellow developers.</p>
             </div>
-            <div className="flex flex-wrap items-center gap-3">
-              <Button variant="outline" onClick={handleCopyLink} className="gap-2 font-medium">
+            <div className="flex flex-nowrap items-center gap-2.5 overflow-x-auto pb-2 sm:pb-0 w-full">
+              <Button variant="outline" onClick={handleCopyLink} className="gap-2 font-medium shrink-0">
                 {copied ? <Check className="w-4 h-4 text-green-500" /> : <Copy className="w-4 h-4" />}
                 {copied ? "Copied" : "Copy Link"}
               </Button>
-              <Button variant="outline" onClick={shareOnTwitter} className="gap-2 font-medium">
+              <Button variant="outline" onClick={shareOnTwitter} className="gap-2 font-medium shrink-0">
                 <Twitter className="w-4 h-4" />
                 Twitter
               </Button>
-              <Button variant="outline" onClick={shareOnLinkedIn} className="gap-2 font-medium">
+              <Button variant="outline" onClick={shareOnLinkedIn} className="gap-2 font-medium shrink-0">
                 <Linkedin className="w-4 h-4" />
                 LinkedIn
               </Button>
-              <Button variant="outline" onClick={shareOnWhatsApp} className="gap-2 font-medium">
+              <Button variant="outline" onClick={shareOnWhatsApp} className="gap-2 font-medium shrink-0">
                 <Send className="w-4 h-4" />
                 WhatsApp
               </Button>
