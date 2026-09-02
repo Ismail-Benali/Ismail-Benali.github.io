@@ -235,21 +235,7 @@ export function BlogPostPage({
           initial={{ y: 20, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
           transition={{ delay: 0.2 }}
-          className="prose prose-invert prose-base sm:prose-lg max-w-none
-            prose-headings:text-foreground prose-headings:font-bold prose-headings:tracking-tight
-            prose-h1:text-3xl sm:prose-h1:text-4xl prose-h1:mb-6 prose-h1:mt-10
-            prose-h2:text-2xl sm:prose-h2:text-3xl prose-h2:mt-14 prose-h2:mb-6 prose-h2:border-b prose-h2:border-border/60 prose-h2:pb-3
-            prose-h3:text-xl sm:prose-h3:text-2xl prose-h3:mt-10 prose-h3:mb-4
-            prose-p:text-foreground/90 prose-p:text-base sm:prose-p:text-lg prose-p:leading-relaxed prose-p:mb-6
-            prose-a:text-primary prose-a:font-semibold prose-a:no-underline hover:prose-a:underline
-            prose-strong:text-foreground prose-strong:font-bold
-            prose-code:text-primary prose-code:bg-secondary prose-code:px-2 prose-code:py-1 prose-code:rounded-md prose-code:text-sm prose-code:before:content-[''] prose-code:after:content-['']
-            prose-pre:bg-card prose-pre:border prose-pre:border-border/80 prose-pre:rounded-2xl prose-pre:shadow-2xl prose-pre:p-6
-            prose-blockquote:border-l-4 prose-blockquote:border-primary prose-blockquote:bg-primary/5 prose-blockquote:px-6 prose-blockquote:py-5 prose-blockquote:rounded-r-2xl prose-blockquote:text-foreground/90 prose-blockquote:italic prose-blockquote:my-8
-            prose-li:text-foreground/90 prose-li:my-2 prose-li:text-base sm:prose-li:text-lg
-            prose-table:border-border prose-th:border-border prose-td:border-border
-            prose-hr:border-border/80 prose-hr:my-12
-            prose-img:rounded-xl prose-img:shadow-2xl prose-img:cursor-pointer prose-img:hover:opacity-90 prose-img:my-8"
+          className="markdown-content"
         >
           <ReactMarkdown>{post.content}</ReactMarkdown>
         </motion.div>
