@@ -37,6 +37,7 @@ import { Separator } from "@/components/ui/separator";
 import { Navbar, type PageView } from "@/components/navbar";
 import { Footer } from "@/components/footer";
 import { fetchBlogPosts, type BlogPostMeta as BlogPostListItem } from "@/lib/blog";
+import { InteractiveTerminal } from "@/components/terminal";
 
 const PROJECTS = [
   {
@@ -669,6 +670,8 @@ function BlogPreviewSection({
 function BlogPage({ onBack }: { onBack: () => void }) {
   const [posts, setPosts] = useState<BlogPostListItem[]>([]);
   const [loading, setLoading] = useState(true);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [selectedTag, setSelectedTag] = useState<string | null>(null);
 
   useEffect(() => {
     async function loadPosts() {
@@ -683,6 +686,16 @@ function BlogPage({ onBack }: { onBack: () => void }) {
     }
     loadPosts();
   }, []);
+
+  const allTags = Array.from(new Set(posts.flatMap((p) => p.tags)));
+
+  const filteredPosts = posts.filter((post) => {
+    const matchesSearch =
+      post.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      post.description.toLowerCase().includes(searchQuery.toLowerCase());
+    const matchesTag = selectedTag ? post.tags.includes(selectedTag) : true;
+    return matchesSearch && matchesTag;
+  });
 
   return (
     <div className="min-h-screen pt-24 pb-20">
@@ -717,14 +730,45 @@ function BlogPage({ onBack }: { onBack: () => void }) {
           <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-4">
             Latest <span className="text-gradient">Articles</span>
           </h1>
-          <p className="text-muted-foreground max-w-2xl text-lg leading-relaxed">
+          <p className="text-muted-foreground max-w-2xl text-lg leading-relaxed mb-6">
             Thoughts, tutorials, and insights on cybersecurity, open-source
             development, and technology.
           </p>
+
+          <div className="flex flex-col sm:flex-row gap-4 items-stretch sm:items-center justify-between">
+            <input
+              type="text"
+              placeholder="Search articles by title or keyword..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              className="bg-card border border-border/80 rounded-xl px-4 py-2.5 text-sm outline-none focus:border-primary w-full sm:max-w-md text-foreground placeholder:text-muted-foreground/60"
+            />
+            {allTags.length > 0 && (
+              <div className="flex flex-wrap gap-1.5">
+                <Badge
+                  variant={selectedTag === null ? "default" : "secondary"}
+                  className="cursor-pointer text-xs font-mono"
+                  onClick={() => setSelectedTag(null)}
+                >
+                  All
+                </Badge>
+                {allTags.map((tag) => (
+                  <Badge
+                    key={tag}
+                    variant={selectedTag === tag ? "default" : "secondary"}
+                    className="cursor-pointer text-xs font-mono"
+                    onClick={() => setSelectedTag(tag)}
+                  >
+                    {tag}
+                  </Badge>
+                ))}
+              </div>
+            )}
+          </div>
         </motion.div>
 
-        {/* Featured / Latest Post */}
-        {!loading && posts.length > 0 && (
+        {/* Featured / Latest Post (only shown if no active search/filter) */}
+        {!loading && !searchQuery && !selectedTag && filteredPosts.length > 0 && (
           <motion.div
             initial={{ y: 30, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
@@ -732,22 +776,22 @@ function BlogPage({ onBack }: { onBack: () => void }) {
             className="mb-10"
           >
             <Link
-              href={`/posts/${posts[0].slug}`}
+              href={`/posts/${filteredPosts[0].slug}`}
               className="block"
             >
               <Card className="bg-card/50 border-border/50 hover:border-primary/30 transition-all duration-300 hover:shadow-lg hover:shadow-primary/5 cursor-pointer group overflow-hidden">
               <div className="grid grid-cols-1 md:grid-cols-2">
                 {/* Cover image */}
                 <div className="relative aspect-video md:aspect-auto overflow-hidden bg-muted/30 flex items-center justify-center min-h-[250px]">
-                  {posts[0].coverImage ? (
+                  {filteredPosts[0].coverImage ? (
                     <>
                       <div 
                         className="absolute inset-0 bg-cover bg-center filter blur-xl opacity-30 scale-110"
-                        style={{ backgroundImage: `url(${posts[0].coverImage})` }}
+                        style={{ backgroundImage: `url(${filteredPosts[0].coverImage})` }}
                       />
                       <img
-                        src={posts[0].coverImage}
-                        alt={posts[0].title}
+                        src={filteredPosts[0].coverImage}
+                        alt={filteredPosts[0].title}
                         className="relative z-10 w-full h-full object-contain p-3 group-hover:scale-105 transition-transform duration-500"
                       />
                     </>
@@ -766,7 +810,7 @@ function BlogPage({ onBack }: { onBack: () => void }) {
                 {/* Content */}
                 <CardContent className="p-6 sm:p-8 flex flex-col justify-center">
                   <div className="flex flex-wrap gap-2 mb-3">
-                    {posts[0].tags.map((tag) => (
+                    {filteredPosts[0].tags.map((tag) => (
                       <Badge
                         key={tag}
                         variant="secondary"
@@ -778,17 +822,17 @@ function BlogPage({ onBack }: { onBack: () => void }) {
                     ))}
                   </div>
                   <h2 className="text-xl sm:text-2xl font-bold mb-3 group-hover:text-primary transition-colors">
-                    {posts[0].title}
+                    {filteredPosts[0].title}
                   </h2>
                   <p className="text-muted-foreground leading-relaxed mb-4 line-clamp-3">
-                    {posts[0].description}
+                    {filteredPosts[0].description}
                   </p>
                   <div className="flex items-center gap-4 text-sm text-muted-foreground">
-                    {posts[0].date && (
+                    {filteredPosts[0].date && (
                       <div className="flex items-center gap-1.5">
                         <Calendar className="w-3.5 h-3.5" />
                         <span>
-                          {new Date(posts[0].date).toLocaleDateString("en-US", {
+                          {new Date(filteredPosts[0].date).toLocaleDateString("en-US", {
                             month: "long",
                             day: "numeric",
                             year: "numeric",
@@ -798,17 +842,11 @@ function BlogPage({ onBack }: { onBack: () => void }) {
                     )}
                     <div className="flex items-center gap-1.5">
                       <Clock className="w-3.5 h-3.5" />
-                      <span>{posts[0].readTime}</span>
+                      <span>{filteredPosts[0].readTime}</span>
                     </div>
-                    {posts[0].images.length > 0 && (
-                      <div className="flex items-center gap-1.5">
-                        <ImageIcon className="w-3.5 h-3.5" />
-                        <span>{posts[0].images.length} image{posts[0].images.length !== 1 ? "s" : ""}</span>
-                      </div>
-                    )}
                   </div>
-                  </CardContent>
-                </div>
+                </CardContent>
+              </div>
               </Card>
               </Link>
           </motion.div>
@@ -819,14 +857,14 @@ function BlogPage({ onBack }: { onBack: () => void }) {
           <div className="flex justify-center py-20">
             <Loader2 className="w-8 h-8 text-primary animate-spin" />
           </div>
-        ) : posts.length <= 1 ? (
+        ) : filteredPosts.length === 0 ? (
           <div className="text-center py-16">
             <BookOpen className="w-12 h-12 text-muted-foreground/30 mx-auto mb-4" />
-            <p className="text-muted-foreground">More posts coming soon!</p>
+            <p className="text-muted-foreground">No matching articles found.</p>
           </div>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {posts.slice(1).map((post, index) => (
+            {filteredPosts.slice(!searchQuery && !selectedTag ? 1 : 0).map((post, index) => (
               <motion.div
                 key={post.slug}
                 initial={{ y: 30, opacity: 0 }}
@@ -1059,39 +1097,104 @@ function ContactSection() {
             </a>
           </motion.div>
 
-          {/* Terminal-style box */}
+          {/* Interactive Terminal Widget */}
           <motion.div
             initial={{ y: 20, opacity: 0 }}
             animate={inView ? { y: 0, opacity: 1 } : {}}
             transition={{ duration: 0.6, delay: 0.4 }}
-            className="mt-16 max-w-lg mx-auto"
+            className="mt-16 max-w-xl mx-auto text-left"
           >
-            <Card className="bg-card/80 border-border/50 glow">
-              <CardContent className="p-1">
-                <div className="flex items-center gap-2 px-4 py-2 border-b border-border/50">
-                  <div className="w-3 h-3 rounded-full bg-red-500/60" />
-                  <div className="w-3 h-3 rounded-full bg-yellow-500/60" />
-                  <div className="w-3 h-3 rounded-full bg-green-500/60" />
-                  <span className="text-xs text-muted-foreground ml-2 font-mono">
-                    terminal
-                  </span>
+            <InteractiveTerminal />
+          </motion.div>
+        </motion.div>
+      </div>
+    </section>
+  );
+}
+
+function CurrentlyLearningSection() {
+  const ref = useRef(null);
+  const inView = useInView(ref, { once: true, margin: "-100px" });
+
+  const learningItems = [
+    {
+      icon: Lock,
+      title: "Advanced API Security",
+      desc: "Deep dive into GraphQL security, gRPC vulnerabilities, and automated API fuzzing.",
+    },
+    {
+      icon: Cpu,
+      title: "Reverse Engineering",
+      desc: "Exploring binary analysis, malware reverse engineering, and low-level system internals.",
+    },
+  ];
+
+  return (
+    <section className="py-20 relative">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+        <motion.div
+          initial={{ y: 40, opacity: 0 }}
+          animate={inView ? { y: 0, opacity: 1 } : {}}
+          transition={{ duration: 0.6 }}
+          className="text-center mb-12"
+          ref={ref}
+        >
+          <Badge variant="secondary" className="mb-4 text-primary border-primary/30">
+            <BookOpen className="w-3 h-3 mr-1" />
+            Continuous Growth
+          </Badge>
+          <h2 className="text-3xl sm:text-4xl font-bold mb-4">
+            Currently <span className="text-gradient">Learning</span>
+          </h2>
+          <p className="text-muted-foreground max-w-xl mx-auto">
+            Exploring cutting-edge topics to stay ahead in cybersecurity and software engineering.
+          </p>
+        </motion.div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-4xl mx-auto">
+          {learningItems.map((item, idx) => (
+            <Card key={idx} className="bg-card/50 border-border/50 hover:border-primary/40 transition-all duration-300">
+              <CardContent className="p-6 flex items-start gap-4">
+                <div className="w-12 h-12 rounded-xl bg-primary/10 border border-primary/20 flex items-center justify-center shrink-0">
+                  <item.icon className="w-6 h-6 text-primary" />
                 </div>
-                <div className="p-4 font-mono text-sm">
-                  <p className="text-muted-foreground">
-                    <span className="text-primary">$</span> echo
-                    &quot;Let&apos;s build something amazing together!&quot;
-                  </p>
-                  <p className="text-primary mt-1">
-                    Let&apos;s build something amazing together!
-                  </p>
-                  <p className="text-muted-foreground mt-2">
-                    <span className="text-primary">$</span>{" "}
-                    <span className="animate-blink">_</span>
-                  </p>
+                <div>
+                  <h3 className="text-lg font-semibold mb-1">{item.title}</h3>
+                  <p className="text-sm text-muted-foreground leading-relaxed">{item.desc}</p>
                 </div>
               </CardContent>
             </Card>
-          </motion.div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function GitHubStatsSection() {
+  const ref = useRef(null);
+  const inView = useInView(ref, { once: true, margin: "-100px" });
+
+  return (
+    <section className="py-16 relative">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center" ref={ref}>
+        <h3 className="text-xl font-bold mb-8 text-muted-foreground">GitHub Activity & Stats</h3>
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={inView ? { opacity: 1, y: 0 } : {}}
+          transition={{ duration: 0.6 }}
+          className="flex flex-wrap items-center justify-center gap-6"
+        >
+          <img
+            src="https://github-readme-stats.vercel.app/api?username=Ismail-Benali&show_icons=true&theme=radical&hide_border=true&bg_color=16,16,16"
+            alt="GitHub Stats"
+            className="rounded-xl shadow-lg max-w-full"
+          />
+          <img
+            src="https://github-readme-stats.vercel.app/api/top-langs/?username=Ismail-Benali&layout=compact&theme=radical&hide_border=true&bg_color=16,16,16"
+            alt="Top Languages"
+            className="rounded-xl shadow-lg max-w-full"
+          />
         </motion.div>
       </div>
     </section>
@@ -1115,8 +1218,10 @@ export default function Home() {
           <HeroSection />
           <AboutSection />
           <ProjectsSection />
+          <GitHubStatsSection />
           <BlogPreviewSection onViewAll={() => navigate("blog")} />
           <SkillsSection />
+          <CurrentlyLearningSection />
           <ContactSection />
         </main>
       )}
