@@ -297,9 +297,11 @@ function AboutSection() {
           <p className="text-muted-foreground max-w-2xl mx-auto text-lg leading-relaxed">
             I am a passionate developer and cybersecurity enthusiast who believes
             in the power of technology to create a safer digital environment.
-            My journey in tech has led me to explore various domains, from
-            building Discord bots to developing OSINT tools and security
-            utilities.
+            As an Electrical Engineering student, I bridge a deep understanding
+            of physical networking layers with the development of advanced
+            security software tools. My journey in tech has led me to explore
+            various domains, from building Discord bots to developing OSINT tools
+            and security utilities.
           </p>
         </motion.div>
 
