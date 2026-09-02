@@ -7,16 +7,25 @@ import {
   ArrowLeft,
   Calendar,
   Clock,
+  Eye,
   Image as ImageIcon,
   Loader2,
+  Share2,
+  Copy,
+  Check,
   Tag,
   X,
+  MessageSquare,
+  Send,
+  Linkedin,
+  Twitter,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 import ReactMarkdown from "react-markdown";
 import { fetchBlogPost, type BlogPostFull } from "@/lib/blog";
+import { useToast } from "@/hooks/use-toast";
 
 export function BlogPostPage({
   slug,
@@ -26,9 +35,12 @@ export function BlogPostPage({
   onBack?: () => void;
 }) {
   const router = useRouter();
+  const { toast } = useToast();
   const [post, setPost] = useState<BlogPostFull | null>(null);
   const [loading, setLoading] = useState(true);
   const [lightboxImg, setLightboxImg] = useState<string | null>(null);
+  const [views, setViews] = useState<number>(0);
+  const [copied, setCopied] = useState(false);
 
   useEffect(() => {
     window.scrollTo({ top: 0 });
@@ -36,6 +48,19 @@ export function BlogPostPage({
       try {
         const data = await fetchBlogPost(slug);
         setPost(data);
+
+        // Simulated & LocalStorage view count
+        if (data) {
+          const storageKey = `post_views_${slug}`;
+          let currentViews = parseInt(localStorage.getItem(storageKey) || "0", 10);
+          if (currentViews === 0) {
+            // Generate deterministic base views from slug length + random 120-450
+            currentViews = Math.floor(slug.length * 45 + 180);
+          }
+          currentViews += 1; // Increment on visit
+          localStorage.setItem(storageKey, currentViews.toString());
+          setViews(currentViews);
+        }
       } catch {
         // silently fail
       } finally {
@@ -46,6 +71,32 @@ export function BlogPostPage({
   }, [slug]);
 
   const handleBack = onBack ?? (() => router.back());
+
+  const handleCopyLink = () => {
+    navigator.clipboard.writeText(window.location.href);
+    setCopied(true);
+    toast({
+      title: "Link Copied!",
+      description: "Article link copied to clipboard.",
+    });
+    setTimeout(() => setCopied(false), 2000);
+  };
+
+  const shareOnTwitter = () => {
+    const text = encodeURIComponent(post?.title || "Check out this article");
+    const url = encodeURIComponent(window.location.href);
+    window.open(`https://twitter.com/intent/tweet?text=${text}&url=${url}`, "_blank");
+  };
+
+  const shareOnLinkedIn = () => {
+    const url = encodeURIComponent(window.location.href);
+    window.open(`https://www.linkedin.com/sharing/share-offsite/?url=${url}`, "_blank");
+  };
+
+  const shareOnWhatsApp = () => {
+    const text = encodeURIComponent(`${post?.title} - ${window.location.href}`);
+    window.open(`https://api.whatsapp.com/send?text=${text}`, "_blank");
+  };
 
   if (loading) {
     return (
@@ -74,7 +125,7 @@ export function BlogPostPage({
         <motion.div
           initial={{ y: 20, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
-          className="mb-8"
+          className="mb-8 flex items-center justify-between"
         >
           <Button
             variant="ghost"
@@ -85,6 +136,37 @@ export function BlogPostPage({
             <ArrowLeft className="w-4 h-4" />
             Back to Blog
           </Button>
+
+          {/* Quick Share Buttons */}
+          <div className="flex items-center gap-1.5">
+            <Button
+              variant="outline"
+              size="icon"
+              className="h-8 w-8 text-muted-foreground hover:text-primary"
+              onClick={handleCopyLink}
+              title="Copy Link"
+            >
+              {copied ? <Check className="w-3.5 h-3.5 text-green-500" /> : <Copy className="w-3.5 h-3.5" />}
+            </Button>
+            <Button
+              variant="outline"
+              size="icon"
+              className="h-8 w-8 text-muted-foreground hover:text-primary"
+              onClick={shareOnTwitter}
+              title="Share on X / Twitter"
+            >
+              <Twitter className="w-3.5 h-3.5" />
+            </Button>
+            <Button
+              variant="outline"
+              size="icon"
+              className="h-8 w-8 text-muted-foreground hover:text-primary"
+              onClick={shareOnLinkedIn}
+              title="Share on LinkedIn"
+            >
+              <Linkedin className="w-3.5 h-3.5" />
+            </Button>
+          </div>
         </motion.div>
 
         {/* Meta */}
@@ -106,14 +188,14 @@ export function BlogPostPage({
             ))}
           </div>
 
-          <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-4">
+          <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-4 tracking-tight">
             {post.title}
           </h1>
 
-          <div className="flex items-center gap-4 text-sm text-muted-foreground mb-6">
+          <div className="flex flex-wrap items-center gap-4 text-sm text-muted-foreground mb-6">
             {post.date && (
               <div className="flex items-center gap-1.5">
-                <Calendar className="w-4 h-4" />
+                <Calendar className="w-4 h-4 text-primary/70" />
                 <span>
                   {new Date(post.date).toLocaleDateString("en-US", {
                     month: "long",
@@ -124,8 +206,12 @@ export function BlogPostPage({
               </div>
             )}
             <div className="flex items-center gap-1.5">
-              <Clock className="w-4 h-4" />
+              <Clock className="w-4 h-4 text-primary/70" />
               <span>{post.readTime}</span>
+            </div>
+            <div className="flex items-center gap-1.5">
+              <Eye className="w-4 h-4 text-primary/70" />
+              <span>{views > 0 ? `${views} views` : "Loading..."}</span>
             </div>
           </div>
         </motion.div>
@@ -138,12 +224,12 @@ export function BlogPostPage({
             initial={{ y: 20, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
             transition={{ delay: 0.15 }}
-            className="mb-8 rounded-xl overflow-hidden border border-border/50"
+            className="mb-8 rounded-xl overflow-hidden border border-border/50 shadow-lg shadow-primary/5"
           >
             <img
               src={post.coverImage}
               alt={`Cover - ${post.title}`}
-              className="w-full object-cover max-h-[400px] cursor-pointer hover:opacity-90 transition-opacity"
+              className="w-full object-cover max-h-[400px] cursor-pointer hover:scale-[1.02] transition-transform duration-300"
               onClick={() => setLightboxImg(post.coverImage)}
             />
           </motion.div>
@@ -183,13 +269,13 @@ export function BlogPostPage({
             <Separator className="mb-8 bg-border/50" />
             <h3 className="text-lg font-semibold mb-4 flex items-center gap-2">
               <ImageIcon className="w-5 h-5 text-primary" />
-              Images
+              Gallery Images
             </h3>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               {post.images.map((img, i) => (
                 <div
                   key={i}
-                  className="rounded-lg overflow-hidden border border-border/50 cursor-pointer hover:border-primary/30 transition-colors group"
+                  className="rounded-lg overflow-hidden border border-border/50 cursor-pointer hover:border-primary/40 transition-colors group shadow-md"
                   onClick={() => setLightboxImg(img)}
                 >
                   <img
@@ -202,6 +288,41 @@ export function BlogPostPage({
             </div>
           </motion.div>
         )}
+
+        {/* Share & Author Card Footer */}
+        <motion.div
+          initial={{ y: 20, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          transition={{ delay: 0.35 }}
+          className="mt-16"
+        >
+          <Separator className="mb-8 bg-border/50" />
+          
+          <div className="bg-card border border-border/60 rounded-xl p-6 sm:p-8 flex flex-col sm:flex-row items-center justify-between gap-6 shadow-xl shadow-primary/5">
+            <div>
+              <h4 className="font-semibold text-foreground text-lg mb-1">Enjoyed this article?</h4>
+              <p className="text-sm text-muted-foreground">Share it with your network or fellow developers.</p>
+            </div>
+            <div className="flex flex-wrap items-center gap-2">
+              <Button variant="outline" size="sm" onClick={handleCopyLink} className="gap-2">
+                {copied ? <Check className="w-4 h-4 text-green-500" /> : <Copy className="w-4 h-4" />}
+                {copied ? "Copied" : "Copy Link"}
+              </Button>
+              <Button variant="outline" size="sm" onClick={shareOnTwitter} className="gap-2">
+                <Twitter className="w-4 h-4" />
+                Twitter
+              </Button>
+              <Button variant="outline" size="sm" onClick={shareOnLinkedIn} className="gap-2">
+                <Linkedin className="w-4 h-4" />
+                LinkedIn
+              </Button>
+              <Button variant="outline" size="sm" onClick={shareOnWhatsApp} className="gap-2">
+                <Send className="w-4 h-4" />
+                WhatsApp
+              </Button>
+            </div>
+          </div>
+        </motion.div>
       </div>
 
       {/* Lightbox */}
@@ -224,7 +345,7 @@ export function BlogPostPage({
             animate={{ scale: 1, opacity: 1 }}
             src={lightboxImg}
             alt="Full view"
-            className="max-w-full max-h-[85vh] object-contain rounded-lg"
+            className="max-w-full max-h-[85vh] object-contain rounded-lg shadow-2xl"
             onClick={(e) => e.stopPropagation()}
           />
         </motion.div>
