@@ -549,20 +549,26 @@ function BlogPreviewSection({
                   >
                     <Card className="h-full bg-card/50 border-border/50 hover:border-primary/30 transition-all duration-300 hover:shadow-lg hover:shadow-primary/5 hover:-translate-y-1 cursor-pointer group overflow-hidden">
                       {/* Cover image */}
-                    <div className="relative aspect-video overflow-hidden">
+                    <div className="relative aspect-video overflow-hidden bg-muted/30 flex items-center justify-center">
                       {post.coverImage ? (
-                        <img
-                          src={post.coverImage}
-                          alt={post.title}
-                          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                        />
+                        <>
+                          <div 
+                            className="absolute inset-0 bg-cover bg-center filter blur-xl opacity-30 scale-110"
+                            style={{ backgroundImage: `url(${post.coverImage})` }}
+                          />
+                          <img
+                            src={post.coverImage}
+                            alt={post.title}
+                            className="relative z-10 w-full h-full object-contain p-2 group-hover:scale-105 transition-transform duration-500"
+                          />
+                        </>
                       ) : (
                         <div className="w-full h-full bg-gradient-to-br from-primary/10 to-cyan-500/5 flex items-center justify-center">
                           <BookOpen className="w-10 h-10 text-primary/20" />
                         </div>
                       )}
                       {post.images.length > 0 && (
-                        <div className="absolute bottom-2 right-2">
+                        <div className="absolute bottom-2 right-2 z-20">
                           <Badge className="bg-background/80 backdrop-blur-sm text-foreground text-[10px] gap-1">
                             <ImageIcon className="w-2.5 h-2.5" />
                             {post.images.length}
@@ -724,19 +730,25 @@ function BlogPage({ onBack }: { onBack: () => void }) {
               <Card className="bg-card/50 border-border/50 hover:border-primary/30 transition-all duration-300 hover:shadow-lg hover:shadow-primary/5 cursor-pointer group overflow-hidden">
               <div className="grid grid-cols-1 md:grid-cols-2">
                 {/* Cover image */}
-                <div className="relative aspect-video md:aspect-auto overflow-hidden">
+                <div className="relative aspect-video md:aspect-auto overflow-hidden bg-muted/30 flex items-center justify-center min-h-[250px]">
                   {posts[0].coverImage ? (
-                    <img
-                      src={posts[0].coverImage}
-                      alt={posts[0].title}
-                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                    />
+                    <>
+                      <div 
+                        className="absolute inset-0 bg-cover bg-center filter blur-xl opacity-30 scale-110"
+                        style={{ backgroundImage: `url(${posts[0].coverImage})` }}
+                      />
+                      <img
+                        src={posts[0].coverImage}
+                        alt={posts[0].title}
+                        className="relative z-10 w-full h-full object-contain p-3 group-hover:scale-105 transition-transform duration-500"
+                      />
+                    </>
                   ) : (
                     <div className="w-full h-full bg-gradient-to-br from-primary/10 to-primary/5 flex items-center justify-center">
                       <BookOpen className="w-16 h-16 text-primary/20" />
                     </div>
                   )}
-                  <div className="absolute top-3 left-3">
+                  <div className="absolute top-3 left-3 z-20">
                     <Badge className="bg-primary text-primary-foreground text-xs font-mono">
                       Latest
                     </Badge>
@@ -819,20 +831,26 @@ function BlogPage({ onBack }: { onBack: () => void }) {
                 >
                   <Card className="h-full bg-card/50 border-border/50 hover:border-primary/30 transition-all duration-300 hover:shadow-lg hover:shadow-primary/5 hover:-translate-y-1 cursor-pointer group overflow-hidden">
                   {/* Card cover image */}
-                  <div className="relative aspect-video overflow-hidden">
+                  <div className="relative aspect-video overflow-hidden bg-muted/30 flex items-center justify-center">
                     {post.coverImage ? (
-                      <img
-                        src={post.coverImage}
-                        alt={post.title}
-                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                      />
+                      <>
+                        <div 
+                          className="absolute inset-0 bg-cover bg-center filter blur-xl opacity-30 scale-110"
+                          style={{ backgroundImage: `url(${post.coverImage})` }}
+                        />
+                        <img
+                          src={post.coverImage}
+                          alt={post.title}
+                          className="relative z-10 w-full h-full object-contain p-2 group-hover:scale-105 transition-transform duration-500"
+                        />
+                      </>
                     ) : (
                       <div className="w-full h-full bg-gradient-to-br from-primary/10 to-cyan-500/5 flex items-center justify-center">
                         <BookOpen className="w-10 h-10 text-primary/20" />
                       </div>
                     )}
                     {post.images.length > 0 && (
-                      <div className="absolute bottom-2 right-2">
+                      <div className="absolute bottom-2 right-2 z-20">
                         <Badge className="bg-background/80 backdrop-blur-sm text-foreground text-[10px] gap-1">
                           <ImageIcon className="w-2.5 h-2.5" />
                           {post.images.length}
