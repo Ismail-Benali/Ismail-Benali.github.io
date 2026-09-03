@@ -568,7 +568,7 @@ function BlogPreviewSection({
                           <img
                             src={post.coverImage}
                             alt={post.title}
-                            className="relative z-10 w-full h-full object-contain p-2 group-hover:scale-105 transition-transform duration-500"
+                            className="relative z-10 w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                           />
                         </>
                       ) : (
@@ -792,7 +792,7 @@ function BlogPage({ onBack }: { onBack: () => void }) {
                       <img
                         src={filteredPosts[0].coverImage}
                         alt={filteredPosts[0].title}
-                        className="relative z-10 w-full h-full object-contain p-3 group-hover:scale-105 transition-transform duration-500"
+                        className="relative z-10 w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                       />
                     </>
                   ) : (
