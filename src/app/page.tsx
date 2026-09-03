@@ -41,13 +41,13 @@ import { InteractiveTerminal } from "@/components/terminal";
 
 const PROJECTS = [
   {
-    name: "KuraiBot",
+    name: "HELIOS-NET",
     description:
-      "An advanced Discord bot featuring moderation, automation, and security tools to help communities stay safe and well-managed.",
-    tech: ["Python", "Discord API", "Security"],
-    icon: Bot,
+      "A sovereign, self-sufficient cyber warfare and offensive reconnaissance framework. Polyglot core (Python orchestration, Go networking, C low-level evasion) with autonomous daemons, encrypted transactional WAL, kill-chain pathfinding, mutation engine, and pivot proxy — no external dependencies.",
+    tech: ["Python", "Go", "C", "Stealth", "Autonomous"],
+    icon: Shield,
     stars: null,
-    url: "https://github.com/Ismail-Benali/KuraiBot",
+    url: "https://github.com/Ismail-Benali/HELIOS-NET",
   },
   {
     name: "InstaSneak",
@@ -59,6 +59,24 @@ const PROJECTS = [
     url: "https://github.com/Ismail-Benali/InstaSneak",
   },
   {
+    name: "InfoMagnet-X",
+    description:
+      "An information gathering and reconnaissance tool that helps security researchers collect data for authorized penetration testing.",
+    tech: ["Python", "Info Gathering", "Security"],
+    icon: Zap,
+    stars: null,
+    url: "https://github.com/Ismail-Benali/InfoMagnet-X",
+  },
+  {
+    name: "KuraiBot",
+    description:
+      "An advanced Discord bot featuring moderation, automation, and security tools to help communities stay safe and well-managed.",
+    tech: ["Python", "Discord API", "Security"],
+    icon: Bot,
+    stars: null,
+    url: "https://github.com/Ismail-Benali/KuraiBot",
+  },
+  {
     name: "NatsuMacTool",
     description:
       "A comprehensive macOS utility toolkit designed for system optimization, security auditing, and performance enhancement.",
@@ -66,15 +84,6 @@ const PROJECTS = [
     icon: Cpu,
     stars: null,
     url: "https://github.com/Ismail-Benali/NatsuMacTool",
-  },
-  {
-    name: "InfoMagnet-X",
-    description:
-      "An information gathering and reconnaissance tool that helps security researchers collect data for authorized penetration testing.",
-    tech: ["Python", "Info Gathering", "Security"],
-    icon: Shield,
-    stars: null,
-    url: "https://github.com/Ismail-Benali/InfoMagnet-X",
   },
 ];
 
@@ -94,11 +103,11 @@ const SKILLS = [
 ];
 
 const TYPING_WORDS = [
-  "Cybersecurity Enthusiast",
-  "Open Source Developer",
-  "Python Expert",
+  "Offensive Security Researcher",
+  "OSINT Expert",
+  "Polyglot Engineer",
   "Security Researcher",
-  "Tech Explorer",
+  "Sovereign Tool Builder",
 ];
 
 /* ──────────────────────── Components ──────────────────────── */
@@ -218,9 +227,9 @@ function HeroSection() {
           transition={{ duration: 0.6, delay: 0.4 }}
           className="text-base sm:text-lg text-muted-foreground max-w-2xl mx-auto mb-8 leading-relaxed"
         >
-          Let&apos;s explore the depths of technology together and make the
-          digital world safer. Passionate about cybersecurity, open-source
-          development, and building tools that matter.
+          Offensive security researcher and OSINT expert building sovereign,
+          self-sufficient tools that push the boundaries of what open-source
+          can do. Creator of HELIOS-NET.
         </motion.p>
 
         {/* CTA Buttons */}
@@ -270,18 +279,18 @@ function AboutSection() {
   const highlights = [
     {
       icon: Shield,
-      title: "Cybersecurity",
-      desc: "Focused on making the digital world safer through innovative security tools and research.",
+      title: "Security Research",
+      desc: "Deep focus on offensive security, low-level evasion, and building autonomous reconnaissance frameworks that operate with zero external dependencies.",
+    },
+    {
+      icon: ScanSearch,
+      title: "OSINT & Recon",
+      desc: "Expert in open-source intelligence gathering and network reconnaissance, crafting ethical tools that surface publicly available information.",
     },
     {
       icon: Code2,
-      title: "Open Source",
-      desc: "Active contributor to the open-source community, building tools that empower developers and researchers.",
-    },
-    {
-      icon: Zap,
-      title: "Automation",
-      desc: "Building intelligent bots and automation tools that streamline workflows and enhance productivity.",
+      title: "Polyglot Engineering",
+      desc: "Architecting across Python, Go, and C — orchestration, high-performance networking, and kernel-adjacent stealth that few frameworks combine.",
     },
   ];
 
@@ -299,16 +308,15 @@ function AboutSection() {
             About Me
           </Badge>
           <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-4">
-            Driven by <span className="text-gradient">Curiosity</span>
+            Driven by <span className="text-gradient">Sovereignty</span>
           </h2>
           <p className="text-muted-foreground max-w-2xl mx-auto text-lg leading-relaxed">
-            I am a passionate developer and cybersecurity enthusiast who believes
-            in the power of technology to create a safer digital environment.
-            As an Electrical Engineering student, I bridge a deep understanding
-            of physical networking layers with the development of advanced
-            security software tools. My journey in tech has led me to explore
-            various domains, from building Discord bots to developing OSINT tools
-            and security utilities.
+            I am an offensive security researcher and OSINT expert who builds
+            self-sufficient tooling that depends on nothing but itself. From
+            HELIOS-NET&apos;s polyglot core — Python orchestration, Go
+            networking, C low-level evasion — to social intelligence
+            frameworks, my work focuses on sovereign systems that stand alone,
+            move undetected, and give researchers full control over the stack.
           </p>
         </motion.div>
 
@@ -1119,13 +1127,13 @@ function CurrentlyLearningSection() {
   const learningItems = [
     {
       icon: Lock,
-      title: "Advanced API Security",
-      desc: "Deep dive into GraphQL security, gRPC vulnerabilities, and automated API fuzzing.",
+      title: "Zero-Day Offensive Research",
+      desc: "Kernel-adjacent evasion, direct syscalls, and protocol-level exploitation that operate under the radar of modern defenses.",
     },
     {
       icon: Cpu,
-      title: "Reverse Engineering",
-      desc: "Exploring binary analysis, malware reverse engineering, and low-level system internals.",
+      title: "Autonomous Agent Networks",
+      desc: "Self-spawning daemons, encrypted transactional WAL, and adaptive learning for frameworks that sustain operations without human supervision.",
     },
   ];
 
@@ -1176,13 +1184,13 @@ function GitHubStatsSection() {
   const inView = useInView(ref, { once: true, margin: "-100px" });
 
   const stats = [
-    { label: "GitHub Profile", value: "@Ismail-Benali", icon: Github, href: "https://github.com/Ismail-Benali" },
-    { label: "Core Focus", value: "Python & Security", icon: Shield, href: "https://github.com/Ismail-Benali" },
+    { label: "Flagship Project", value: "HELIOS-NET", icon: Shield, href: "https://github.com/Ismail-Benali/HELIOS-NET" },
+    { label: "Focus", value: "Security & OSINT", icon: ScanSearch, href: "https://github.com/Ismail-Benali" },
     { label: "Repositories", value: "Open Source", icon: FolderGit2, href: "https://github.com/Ismail-Benali?tab=repositories" },
-    { label: "Primary Language", value: "Python / TypeScript", icon: Terminal, href: "https://github.com/Ismail-Benali" },
+    { label: "Core Stack", value: "Python / Go / C", icon: Terminal, href: "https://github.com/Ismail-Benali" },
   ];
 
-  const languages = ["Python", "JavaScript", "TypeScript", "HTML/CSS", "Shell", "Markdown", "Git"];
+  const languages = ["Python", "Go", "C", "TypeScript", "Shell", "Markdown", "Git"];
 
   return (
     <section className="py-16 relative" ref={ref}>
