@@ -1175,27 +1175,56 @@ function GitHubStatsSection() {
   const ref = useRef(null);
   const inView = useInView(ref, { once: true, margin: "-100px" });
 
+  const stats = [
+    { label: "GitHub Profile", value: "@Ismail-Benali", icon: Github, href: "https://github.com/Ismail-Benali" },
+    { label: "Core Focus", value: "Python & Security", icon: Shield, href: "https://github.com/Ismail-Benali" },
+    { label: "Repositories", value: "Open Source", icon: FolderGit2, href: "https://github.com/Ismail-Benali?tab=repositories" },
+    { label: "Primary Language", value: "Python / TypeScript", icon: Terminal, href: "https://github.com/Ismail-Benali" },
+  ];
+
+  const languages = ["Python", "JavaScript", "TypeScript", "HTML/CSS", "Shell", "Markdown", "Git"];
+
   return (
-    <section className="py-16 relative">
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center" ref={ref}>
-        <h3 className="text-xl font-bold mb-8 text-muted-foreground">GitHub Activity & Stats</h3>
+    <section className="py-16 relative" ref={ref}>
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={inView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.6 }}
-          className="flex flex-wrap items-center justify-center gap-6"
+          className="text-center mb-8"
         >
-          <img
-            src="https://github-readme-stats.vercel.app/api?username=Ismail-Benali&show_icons=true&theme=radical&hide_border=true&bg_color=16,16,16"
-            alt="GitHub Stats"
-            className="rounded-xl shadow-lg max-w-full"
-          />
-          <img
-            src="https://github-readme-stats.vercel.app/api/top-langs/?username=Ismail-Benali&layout=compact&theme=radical&hide_border=true&bg_color=16,16,16"
-            alt="Top Languages"
-            className="rounded-xl shadow-lg max-w-full"
-          />
+          <h3 className="text-xl font-bold mb-2 text-foreground">GitHub Activity & Ecosystem</h3>
+          <p className="text-sm text-muted-foreground">Active open-source contributor and tool developer.</p>
         </motion.div>
+
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+          {stats.map((stat, idx) => (
+            <a key={idx} href={stat.href} target="_blank" rel="noopener noreferrer" className="block">
+              <Card className="bg-card/50 border-border/50 hover:border-primary/40 transition-all duration-300 hover:shadow-lg hover:shadow-primary/5 group h-full">
+                <CardContent className="p-5 flex items-center gap-4">
+                  <div className="w-10 h-10 rounded-xl bg-primary/10 border border-primary/20 flex items-center justify-center shrink-0 group-hover:bg-primary/20 transition-colors">
+                    <stat.icon className="w-5 h-5 text-primary" />
+                  </div>
+                  <div>
+                    <span className="text-xs text-muted-foreground block font-mono">{stat.label}</span>
+                    <span className="font-semibold text-sm sm:text-base group-hover:text-primary transition-colors">{stat.value}</span>
+                  </div>
+                </CardContent>
+              </Card>
+            </a>
+          ))}
+        </div>
+
+        <div className="bg-card/30 border border-border/40 rounded-2xl p-6 text-center">
+          <p className="text-xs text-muted-foreground font-mono uppercase tracking-wider mb-3">Top Tech Stack & Languages</p>
+          <div className="flex flex-wrap items-center justify-center gap-2">
+            {languages.map((lang) => (
+              <Badge key={lang} variant="secondary" className="text-xs font-mono bg-primary/10 text-primary border-primary/20 px-3 py-1">
+                {lang}
+              </Badge>
+            ))}
+          </div>
+        </div>
       </div>
     </section>
   );
