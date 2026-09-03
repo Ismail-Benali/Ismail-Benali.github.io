@@ -30,16 +30,16 @@ export function InteractiveTerminal() {
         output = "Available commands: whoami, about, projects, skills, contact, clear";
         break;
       case "whoami":
-        output = "Ismail-Benali (H3l!0s_T3k) - Cybersecurity Enthusiast & Developer";
+        output = "Ismail-Benali (H3l!0s_T3k) - Offensive Security Researcher & OSINT Expert";
         break;
       case "about":
-        output = "Electrical Engineering student & security researcher bridging physical layers with advanced software tools.";
+        output = "Offensive security researcher & OSINT expert. Creator of HELIOS-NET, a sovereign polyglot cyber framework.";
         break;
       case "projects":
-        output = "Featured Projects: KuraiBot, InstaSneak, NatsuMacTool, InfoMagnet-X. Check out the Projects section above!";
+        output = "Featured Projects: HELIOS-NET, InstaSneak, InfoMagnet-X. Check out the Projects section above!";
         break;
       case "skills":
-        output = "Python, Bash, Wireshark, Burp Suite, REST APIs, Linux, Git, Docker, TypeScript.";
+        output = "Python, Go, C, OSINT, Offensive Security, Network Analysis, Linux, Git.";
         break;
       case "contact":
         output = "Email: ismail.benali@proton.me | GitHub: github.com/Ismail-Benali";

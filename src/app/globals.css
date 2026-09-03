@@ -43,39 +43,43 @@
   --radius-xl: calc(var(--radius) + 4px);
 }
 
+/* ─────────────── Dark Hacker / Terminal Theme ─────────────── */
 :root {
-  --radius: 0.625rem;
-  --background: oklch(0.12 0.005 160);
-  --foreground: oklch(0.95 0 0);
-  --card: oklch(0.16 0.008 160);
-  --card-foreground: oklch(0.95 0 0);
-  --popover: oklch(0.16 0.008 160);
-  --popover-foreground: oklch(0.95 0 0);
-  --primary: oklch(0.72 0.19 163);
-  --primary-foreground: oklch(0.12 0.005 160);
-  --secondary: oklch(0.22 0.01 160);
-  --secondary-foreground: oklch(0.90 0 0);
-  --muted: oklch(0.20 0.008 160);
-  --muted-foreground: oklch(0.60 0.02 160);
-  --accent: oklch(0.72 0.19 163);
-  --accent-foreground: oklch(0.12 0.005 160);
-  --destructive: oklch(0.577 0.245 27.325);
-  --border: oklch(0.25 0.01 160);
-  --input: oklch(0.22 0.01 160);
-  --ring: oklch(0.72 0.19 163);
-  --chart-1: oklch(0.72 0.19 163);
-  --chart-2: oklch(0.65 0.17 140);
-  --chart-3: oklch(0.55 0.15 160);
-  --chart-4: oklch(0.78 0.16 120);
-  --chart-5: oklch(0.45 0.12 180);
-  --sidebar: oklch(0.14 0.006 160);
-  --sidebar-foreground: oklch(0.95 0 0);
-  --sidebar-primary: oklch(0.72 0.19 163);
-  --sidebar-primary-foreground: oklch(0.12 0.005 160);
-  --sidebar-accent: oklch(0.20 0.008 160);
-  --sidebar-accent-foreground: oklch(0.95 0 0);
-  --sidebar-border: oklch(0.25 0.01 160);
-  --sidebar-ring: oklch(0.72 0.19 163);
+  --radius: 0.125rem;
+  /* Deep void black background */
+  --background: #050805;
+  --foreground: #c8f5d0;
+  /* Card = subtle darker panel */
+  --card: #0a0f0a;
+  --card-foreground: #c8f5d0;
+  --popover: #0a0f0a;
+  --popover-foreground: #c8f5d0;
+  /* Matrix phosphor green */
+  --primary: #22ff66;
+  --primary-foreground: #03130a;
+  --secondary: #10361a;
+  --secondary-foreground: #a7f0c0;
+  --muted: #0d150e;
+  --muted-foreground: #5f8f6e;
+  --accent: #22ff66;
+  --accent-foreground: #03130a;
+  --destructive: #ff4458;
+  --border: #173a20;
+  --input: #173a20;
+  --ring: #22ff66;
+  --chart-1: #22ff66;
+  --chart-2: #ffd23f;
+  --chart-3: #47e0ff;
+  --chart-4: #ff6fd8;
+  --chart-5: #9aff5a;
+  --sidebar: #070b07;
+  --sidebar-foreground: #c8f5d0;
+  --sidebar-primary: #22ff66;
+  --sidebar-primary-foreground: #03130a;
+  --sidebar-accent: #10361a;
+  --sidebar-accent-foreground: #c8f5d0;
+  --sidebar-border: #173a20;
+  --sidebar-ring: #22ff66;
 }
 
 @layer base {
@@ -84,7 +88,20 @@
   }
   body {
     @apply bg-background text-foreground;
+    font-family: var(--font-mono), monospace;
+    letter-spacing: 0.02em;
   }
+}
+
+/* Arabic font handling */
+html[lang="ar"] body {
+  font-family: var(--font-geist-sans), "Tajawal", "Cairo", var(--font-geist-mono), monospace;
+  direction: rtl;
+}
+
+html[lang="ar"] .ltr {
+  direction: ltr;
+  unicode-bidi: embed;
 }
 
 /* Smooth scrolling */
@@ -92,40 +109,77 @@ html {
   scroll-behavior: smooth;
 }
 
-/* Custom scrollbar */
+/* Custom scrollbar — phosphor green */
 ::-webkit-scrollbar {
   width: 6px;
 }
 ::-webkit-scrollbar-track {
-  background: oklch(0.14 0.006 160);
+  background: #050805;
 }
 ::-webkit-scrollbar-thumb {
-  background: oklch(0.35 0.08 160);
-  border-radius: 3px;
+  background: #22ff66;
+  border-radius: 0;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: oklch(0.45 0.1 160);
+  background: #7dffa6;
 }
 
-/* Grid background pattern */
+/* Terminal grid background */
 .grid-bg {
   background-image:
-    linear-gradient(rgba(16, 185, 129, 0.03) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(16, 185, 129, 0.03) 1px, transparent 1px);
-  background-size: 60px 60px;
+    linear-gradient(rgba(34, 255, 102, 0.045) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(34, 255, 102, 0.045) 1px, transparent 1px);
+  background-size: 42px 42px;
+}
+
+/* CRT scanlines overlay */
+.scanlines::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 60;
+  background: repeating-linear-gradient(
+    to bottom,
+    rgba(0, 0, 0, 0) 0px,
+    rgba(0, 0, 0, 0) 2px,
+    rgba(0, 0, 0, 0.18) 3px,
+    rgba(0, 0, 0, 0) 4px
+  );
+  mix-blend-mode: multiply;
+}
+
+/* Vignette glow for terminal feel */
+.vignette::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 61;
+  background: radial-gradient(
+    ellipse at center,
+    rgba(0, 0, 0, 0) 55%,
+    rgba(0, 0, 0, 0.5) 100%
+  );
 }
 
 /* Glow effect */
 .glow {
-  box-shadow: 0 0 40px rgba(16, 185, 129, 0.15), 0 0 80px rgba(16, 185, 129, 0.05);
+  box-shadow: 0 0 12px rgba(34, 255, 102, 0.25), 0 0 40px rgba(34, 255, 102, 0.08);
 }
 
-/* Text gradient */
+/* Text gradient — hacker phosphor */
 .text-gradient {
-  background: linear-gradient(135deg, #10b981, #06b6d4, #8b5cf6);
+  background: linear-gradient(135deg, #22ff66, #47e0ff);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
+}
+
+/* Terminal type accent */
+.text-terminal {
+  color: #22ff66;
+  text-shadow: 0 0 8px rgba(34, 255, 102, 0.6);
 }
 
 /* Floating animation */
@@ -153,6 +207,34 @@ html {
 }
 .animate-pulse-ring {
   animation: pulse-ring 2s cubic-bezier(0.215, 0.61, 0.355, 1) infinite;
+}
+
+/* Flicker effect for terminal titles */
+@keyframes flicker {
+  0%, 100% { opacity: 1; }
+  92% { opacity: 1; }
+  93% { opacity: 0.6; }
+  94% { opacity: 1; }
+  97% { opacity: 0.8; }
+  98% { opacity: 1; }
+}
+.animate-flicker {
+  animation: flicker 4s linear infinite;
+}
+
+/* Scan sweeping line on hero */
+@keyframes scan {
+  0% { top: -10%; }
+  100% { top: 110%; }
+}
+.animate-scan {
+  animation: scan 6s linear infinite;
+}
+
+/* Terminal window border styling helper */
+.terminal-border {
+  border: 1px solid #173a20;
+  background: linear-gradient(180deg, rgba(34,255,102,0.03), rgba(34,255,102,0.01));
 }
 
 /* Markdown Content Styles */
@@ -223,7 +305,7 @@ html {
 
 .markdown-content blockquote {
   border-left: 4px solid var(--primary);
-  background: oklch(0.72 0.19 163 / 0.08);
+  background: rgba(34, 255, 102, 0.08);
   padding: 1.25rem 1.5rem;
   border-radius: 0 0.75rem 0.75rem 0;
   margin: 2rem 0;

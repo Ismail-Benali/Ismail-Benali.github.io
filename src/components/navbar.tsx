@@ -2,19 +2,11 @@
 
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
-import { Github, Terminal } from "lucide-react";
+import { Github } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { useI18n } from "@/lib/i18n";
 
 export type PageView = "home" | "blog" | "post";
-
-const NAV_ITEMS = [
-  { label: "Home", href: "#home", page: "home" as PageView },
-  { label: "About", href: "#about", page: "home" as PageView },
-  { label: "Projects", href: "#projects", page: "home" as PageView },
-  { label: "Blog", href: "", page: "blog" as PageView },
-  { label: "Skills", href: "#skills", page: "home" as PageView },
-  { label: "Contact", href: "#contact", page: "home" as PageView },
-];
 
 export function Navbar({
   currentView,
@@ -23,6 +15,7 @@ export function Navbar({
   currentView: PageView;
   onNavigate: (view: PageView, href?: string) => void;
 }) {
+  const { t, lang, setLang } = useI18n();
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
 
@@ -32,16 +25,20 @@ export function Navbar({
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
+  const NAV_ITEMS = [
+    { label: t("nav_home"), href: "#home", page: "home" as PageView },
+    { label: t("nav_about"), href: "#about", page: "home" as PageView },
+    { label: t("nav_arsenal"), href: "#arsenal", page: "home" as PageView },
+    { label: t("nav_projects"), href: "#projects", page: "home" as PageView },
+    { label: t("nav_skills"), href: "#skills", page: "home" as PageView },
+    { label: t("nav_contact"), href: "#contact", page: "home" as PageView },
+  ];
+
   const handleNav = (page: PageView, href: string) => {
     setMobileOpen(false);
-    if (page === "blog") {
-      onNavigate("blog");
-      window.scrollTo({ top: 0, behavior: "smooth" });
-    } else {
-      onNavigate("home");
-      const el = document.querySelector(href);
-      if (el) el.scrollIntoView({ behavior: "smooth" });
-    }
+    onNavigate("home");
+    const el = document.querySelector(href);
+    if (el) el.scrollIntoView({ behavior: "smooth" });
   };
 
   return (
@@ -51,7 +48,7 @@ export function Navbar({
       transition={{ duration: 0.6, ease: "easeOut" }}
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
         scrolled
-          ? "bg-background/80 backdrop-blur-xl border-b border-border shadow-lg"
+          ? "bg-background/90 backdrop-blur-xl border-b border-border shadow-lg"
           : "bg-transparent"
       }`}
     >
@@ -64,61 +61,75 @@ export function Navbar({
             }}
             className="flex items-center gap-2 group"
           >
-            <div className="w-8 h-8 rounded-lg bg-primary/10 border border-primary/30 flex items-center justify-center group-hover:bg-primary/20 transition-colors">
-              <Terminal className="w-4 h-4 text-primary" />
-            </div>
-            <span className="font-mono font-bold text-sm text-foreground">
+            <span className="text-primary text-terminal font-bold text-lg">$</span>
+            <span className="font-mono font-bold text-sm text-foreground group-hover:text-primary transition-colors">
               H3l!0s_T3k
             </span>
+            <span className="text-primary animate-blink text-sm">_</span>
           </button>
 
           {/* Desktop nav */}
           <div className="hidden md:flex items-center gap-1">
             {NAV_ITEMS.map((item) => (
               <button
-                key={item.label}
+                key={item.href}
                 onClick={() => handleNav(item.page, item.href)}
-                className={`px-3 py-2 text-sm transition-colors rounded-md hover:bg-primary/5 ${
-                  currentView !== "home" && item.page === "blog"
-                    ? "text-primary font-medium"
-                    : "text-muted-foreground hover:text-primary"
-                }`}
+                className="px-3 py-2 text-sm font-mono transition-colors rounded-md hover:bg-primary/5 text-muted-foreground hover:text-primary"
               >
                 {item.label}
               </button>
             ))}
+
+            {/* Language toggle */}
+            <button
+              onClick={() => setLang(lang === "en" ? "ar" : "en")}
+              className="ml-2 px-2 py-1 text-xs font-mono border border-border rounded text-primary hover:bg-primary/10 transition-colors"
+              aria-label="Toggle language"
+            >
+              {lang === "en" ? "ع" : "EN"}
+            </button>
+
             <a href="https://github.com/Ismail-Benali" target="_blank" rel="noopener noreferrer">
-              <Button variant="outline" size="sm" className="ml-2 gap-2">
+              <Button variant="outline" size="sm" className="ml-1 gap-2 font-mono">
                 <Github className="w-4 h-4" />
-                GitHub
+                {t("nav_github")}
               </Button>
             </a>
           </div>
 
           {/* Mobile hamburger */}
-          <button
-            className="md:hidden p-2 text-muted-foreground hover:text-primary transition-colors"
-            onClick={() => setMobileOpen(!mobileOpen)}
-            aria-label="Toggle menu"
-          >
-            <div className="w-5 h-5 flex flex-col justify-center gap-1">
-              <span
-                className={`block h-0.5 w-5 bg-current transition-all ${
-                  mobileOpen ? "rotate-45 translate-y-1.5" : ""
-                }`}
-              />
-              <span
-                className={`block h-0.5 w-5 bg-current transition-all ${
-                  mobileOpen ? "opacity-0" : ""
-                }`}
-              />
-              <span
-                className={`block h-0.5 w-5 bg-current transition-all ${
-                  mobileOpen ? "-rotate-45 -translate-y-1.5" : ""
-                }`}
-              />
-            </div>
-          </button>
+          <div className="md:hidden flex items-center gap-3">
+            <button
+              onClick={() => setLang(lang === "en" ? "ar" : "en")}
+              className="px-2 py-1 text-xs font-mono border border-border rounded text-primary hover:bg-primary/10 transition-colors"
+              aria-label="Toggle language"
+            >
+              {lang === "en" ? "ع" : "EN"}
+            </button>
+            <button
+              className="p-2 text-muted-foreground hover:text-primary transition-colors"
+              onClick={() => setMobileOpen(!mobileOpen)}
+              aria-label="Toggle menu"
+            >
+              <div className="w-5 h-5 flex flex-col justify-center gap-1">
+                <span
+                  className={`block h-0.5 w-5 bg-current transition-all ${
+                    mobileOpen ? "rotate-45 translate-y-1.5" : ""
+                  }`}
+                />
+                <span
+                  className={`block h-0.5 w-5 bg-current transition-all ${
+                    mobileOpen ? "opacity-0" : ""
+                  }`}
+                />
+                <span
+                  className={`block h-0.5 w-5 bg-current transition-all ${
+                    mobileOpen ? "-rotate-45 -translate-y-1.5" : ""
+                  }`}
+                />
+              </div>
+            </button>
+          </div>
         </div>
       </div>
 
@@ -133,13 +144,9 @@ export function Navbar({
           <div className="px-4 py-4 space-y-2">
             {NAV_ITEMS.map((item) => (
               <button
-                key={item.label}
+                key={item.href}
                 onClick={() => handleNav(item.page, item.href)}
-                className={`block w-full text-left px-3 py-2 text-sm transition-colors rounded-md ${
-                  currentView !== "home" && item.page === "blog"
-                    ? "text-primary bg-primary/5"
-                    : "text-muted-foreground hover:text-primary hover:bg-primary/5"
-                }`}
+                className="block w-full text-left px-3 py-2 text-sm font-mono transition-colors rounded-md text-muted-foreground hover:text-primary hover:bg-primary/5"
               >
                 {item.label}
               </button>
@@ -150,9 +157,9 @@ export function Navbar({
               rel="noopener noreferrer"
               className="block"
             >
-              <Button variant="outline" size="sm" className="w-full gap-2 mt-2">
+              <Button variant="outline" size="sm" className="w-full gap-2 mt-2 font-mono">
                 <Github className="w-4 h-4" />
-                GitHub Profile
+                {t("nav_github")}
               </Button>
             </a>
           </div>
