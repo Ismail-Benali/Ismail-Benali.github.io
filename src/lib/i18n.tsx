@@ -18,6 +18,7 @@ const en: Dict = {
   nav_about: "about",
   nav_arsenal: "arsenal",
   nav_projects: "projects",
+  nav_blog: "blog",
   nav_skills: "skills",
   nav_contact: "contact",
   nav_github: "github",
@@ -70,6 +71,19 @@ const en: Dict = {
   projects_title: "deployed.repos",
   projects_sub: "A selection of tools forged for security, recon, and automation.",
 
+  // Blog
+  sec_blog: "[ blog ]",
+  blog_title: "latest.writeups",
+  blog_sub: "Thoughts, research, and write-ups on security and engineering.",
+  blog_latest: "latest",
+  blog_no_posts: "No write-ups yet. stay tuned.",
+  blog_view_all: "view all",
+  blog_search: "Search write-ups...",
+  blog_all: "all",
+  blog_posts_label: "write-ups",
+  blog_back: "back",
+  blog_source: "view source",
+
   // Skills
   skills_title: "stack.trace",
   skills_sub: "Technologies I operate daily.",
@@ -90,6 +104,7 @@ const ar: Dict = {
   nav_about: "نبذة",
   nav_arsenal: "الترسانة",
   nav_projects: "المشاريع",
+  nav_blog: "المدونة",
   nav_skills: "المهارات",
   nav_contact: "تواصل",
   nav_github: "جيت هب",
@@ -136,6 +151,18 @@ const ar: Dict = {
 
   projects_title: "deployed.repos",
   projects_sub: "مجموعة أدوات صُنعت للأمن والاستطلاع والأتمتة.",
+
+  sec_blog: "[ المدونة ]",
+  blog_title: "آخر.الكتابات",
+  blog_sub: "أفكار وأبحاث وكتابات حول الأمن والهندسة.",
+  blog_latest: "الأحدث",
+  blog_no_posts: "لا كتابات بعد. تابعنا!",
+  blog_view_all: "عرض الكل",
+  blog_search: "ابحث في الكتابات...",
+  blog_all: "الكل",
+  blog_posts_label: "كتابات",
+  blog_back: "رجوع",
+  blog_source: "عرض المصدر",
 
   skills_title: "stack.trace",
   skills_sub: "تقنيات أُشغّلها يومياً.",

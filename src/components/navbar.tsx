@@ -30,15 +30,21 @@ export function Navbar({
     { label: t("nav_about"), href: "#about", page: "home" as PageView },
     { label: t("nav_arsenal"), href: "#arsenal", page: "home" as PageView },
     { label: t("nav_projects"), href: "#projects", page: "home" as PageView },
+    { label: t("nav_blog"), href: "", page: "blog" as PageView },
     { label: t("nav_skills"), href: "#skills", page: "home" as PageView },
     { label: t("nav_contact"), href: "#contact", page: "home" as PageView },
   ];
 
   const handleNav = (page: PageView, href: string) => {
     setMobileOpen(false);
-    onNavigate("home");
-    const el = document.querySelector(href);
-    if (el) el.scrollIntoView({ behavior: "smooth" });
+    if (page === "blog") {
+      onNavigate("blog");
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    } else {
+      onNavigate("home");
+      const el = document.querySelector(href);
+      if (el) el.scrollIntoView({ behavior: "smooth" });
+    }
   };
 
   return (
@@ -72,9 +78,13 @@ export function Navbar({
           <div className="hidden md:flex items-center gap-1">
             {NAV_ITEMS.map((item) => (
               <button
-                key={item.href}
+                key={item.href || item.page}
                 onClick={() => handleNav(item.page, item.href)}
-                className="px-3 py-2 text-sm font-mono transition-colors rounded-md hover:bg-primary/5 text-muted-foreground hover:text-primary"
+                className={`px-3 py-2 text-sm font-mono transition-colors rounded-md hover:bg-primary/5 ${
+                  currentView === "blog" && item.page === "blog"
+                    ? "text-primary font-medium"
+                    : "text-muted-foreground hover:text-primary"
+                }`}
               >
                 {item.label}
               </button>
@@ -144,9 +154,13 @@ export function Navbar({
           <div className="px-4 py-4 space-y-2">
             {NAV_ITEMS.map((item) => (
               <button
-                key={item.href}
+                key={item.href || item.page}
                 onClick={() => handleNav(item.page, item.href)}
-                className="block w-full text-left px-3 py-2 text-sm font-mono transition-colors rounded-md text-muted-foreground hover:text-primary hover:bg-primary/5"
+                className={`block w-full text-left px-3 py-2 text-sm font-mono transition-colors rounded-md ${
+                  currentView === "blog" && item.page === "blog"
+                    ? "text-primary bg-primary/5"
+                    : "text-muted-foreground hover:text-primary hover:bg-primary/5"
+                }`}
               >
                 {item.label}
               </button>

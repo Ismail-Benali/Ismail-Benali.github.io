@@ -132,37 +132,6 @@ html {
   background-size: 42px 42px;
 }
 
-/* CRT scanlines overlay */
-.scanlines::before {
-  content: "";
-  position: fixed;
-  inset: 0;
-  pointer-events: none;
-  z-index: 60;
-  background: repeating-linear-gradient(
-    to bottom,
-    rgba(0, 0, 0, 0) 0px,
-    rgba(0, 0, 0, 0) 2px,
-    rgba(0, 0, 0, 0.18) 3px,
-    rgba(0, 0, 0, 0) 4px
-  );
-  mix-blend-mode: multiply;
-}
-
-/* Vignette glow for terminal feel */
-.vignette::after {
-  content: "";
-  position: fixed;
-  inset: 0;
-  pointer-events: none;
-  z-index: 61;
-  background: radial-gradient(
-    ellipse at center,
-    rgba(0, 0, 0, 0) 55%,
-    rgba(0, 0, 0, 0.5) 100%
-  );
-}
-
 /* Glow effect */
 .glow {
   box-shadow: 0 0 12px rgba(34, 255, 102, 0.25), 0 0 40px rgba(34, 255, 102, 0.08);
@@ -235,6 +204,11 @@ html {
 .terminal-border {
   border: 1px solid #173a20;
   background: linear-gradient(180deg, rgba(34,255,102,0.03), rgba(34,255,102,0.01));
+}
+
+:focus-visible {
+  outline: 2px solid #22ff66;
+  outline-offset: 2px;
 }
 
 /* Markdown Content Styles */
