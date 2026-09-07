@@ -61,6 +61,7 @@ export const PLATFORMS: Platform[] = [
     color: "#00D26A",
     description: "Community forum profile on the Sh3ll Cloud platform.",
     initial: "S3",
+    logo: "https://sh3ll.cloud/xf2/data/assets/logo/favicon-192.webp",
   },
 ];
 

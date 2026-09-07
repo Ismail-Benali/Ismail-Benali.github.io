@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { Github, Mail, Terminal, ArrowUpRight } from "lucide-react";
 import { PLATFORMS } from "@/data/platforms";
+import { PlatformLogo } from "@/components/platform-logo";
 
 export function Footer() {
   return (
@@ -61,23 +62,14 @@ export function Footer() {
                     rel="noopener noreferrer"
                     className="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-primary transition-colors"
                   >
-                    <span
-                      className="inline-flex items-center justify-center w-5 h-5 rounded overflow-hidden"
-                      style={{ backgroundColor: p.logo ? "#fff" : p.color }}
-                    >
-                      {p.logo ? (
-                        <img
-                          src={p.logo}
-                          alt={`${p.name} logo`}
-                          loading="lazy"
-                          className="w-full h-full object-contain p-px"
-                        />
-                      ) : (
-                        <span className="text-[8px] font-bold text-white">
-                          {p.initial}
-                        </span>
-                      )}
-                    </span>
+                    <PlatformLogo
+                      name={p.name}
+                      logo={p.logo}
+                      initial={p.initial}
+                      color={p.color}
+                      className="w-5 h-5"
+                      small
+                    />
                     {p.name}
                     <ArrowUpRight className="w-3 h-3" />
                   </a>
@@ -111,16 +103,14 @@ export function Footer() {
               className="text-muted-foreground hover:text-[#ff6600] transition-colors"
               aria-label="Hacker News"
             >
-              <span
-                className="inline-flex items-center justify-center w-5 h-5 rounded overflow-hidden bg-white"
-              >
-                <img
-                  src="https://news.ycombinator.com/y18.svg"
-                  alt="Hacker News logo"
-                  loading="lazy"
-                  className="w-full h-full object-contain p-px"
-                />
-              </span>
+              <PlatformLogo
+                name="Hacker News"
+                logo={PLATFORMS[1].logo}
+                initial={PLATFORMS[1].initial}
+                color={PLATFORMS[1].color}
+                className="w-5 h-5"
+                small
+              />
             </a>
             <a
               href="mailto:ismail.benali@proton.me"

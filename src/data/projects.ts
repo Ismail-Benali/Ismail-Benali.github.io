@@ -11,6 +11,7 @@ export interface Project {
   topics: string[];
   highlights: string[];
   status: "active" | "maintained" | "archived";
+  coverImage?: string;
 }
 
 export const PROJECTS: Project[] = [
@@ -33,6 +34,8 @@ export const PROJECTS: Project[] = [
       "CLI + simulation + recovery workflows",
     ],
     status: "active",
+    coverImage:
+      "https://github.com/user-attachments/assets/eb7d5c73-ee03-4500-bc95-45269d7afec6",
   },
   {
     slug: "awesome-attack-surface-management",

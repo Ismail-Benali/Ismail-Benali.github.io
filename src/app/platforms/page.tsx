@@ -5,6 +5,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Navbar } from "@/components/navbar";
 import { Footer } from "@/components/footer";
 import { PLATFORMS } from "@/data/platforms";
+import { PlatformLogo } from "@/components/platform-logo";
 
 export const metadata: Metadata = {
   title: "Platforms | H3l0s_T3k",
@@ -44,23 +45,13 @@ export default function PlatformsPage() {
                 <Card className="h-full bg-card/50 border-border/50 hover:border-primary/30 transition-all duration-300 hover:shadow-lg hover:shadow-primary/5 hover:-translate-y-1">
                   <CardContent className="p-6 flex items-start gap-5">
                     {/* Platform logo (official site icon) or colored initial badge */}
-                    <div
-                      className="w-14 h-14 rounded-xl flex items-center justify-center shrink-0 shadow-lg group-hover:scale-105 transition-transform overflow-hidden"
-                      style={{ backgroundColor: p.logo ? "#fff" : p.color }}
-                    >
-                      {p.logo ? (
-                        <img
-                          src={p.logo}
-                          alt={`${p.name} logo`}
-                          loading="lazy"
-                          className="w-full h-full object-contain p-1.5"
-                        />
-                      ) : (
-                        <span className="text-lg font-bold text-white">
-                          {p.initial}
-                        </span>
-                      )}
-                    </div>
+                    <PlatformLogo
+                      name={p.name}
+                      logo={p.logo}
+                      initial={p.initial}
+                      color={p.color}
+                      className="w-14 h-14"
+                    />
 
                     <div className="flex-1">
                       <div className="flex items-center justify-between mb-1">

@@ -25,6 +25,7 @@ import { Navbar } from "@/components/navbar";
 import { Footer } from "@/components/footer";
 import { PROJECTS } from "@/data/projects";
 import { PLATFORMS } from "@/data/platforms";
+import { PlatformLogo } from "@/components/platform-logo";
 import { fetchBlogPosts } from "@/lib/blog";
 
 export default async function Home() {
@@ -223,23 +224,14 @@ export default async function Home() {
                 <a key={p.name} href={p.url} target="_blank" rel="noopener noreferrer" className="block group">
                   <Card className="bg-card/50 border-border/50 hover:border-primary/30 transition-all duration-300 hover:shadow-lg hover:shadow-primary/5 h-full">
                     <CardContent className="p-5 flex flex-col items-center text-center gap-3">
-                      <div
-                        className="w-12 h-12 rounded-xl flex items-center justify-center shadow-lg group-hover:scale-105 transition-transform overflow-hidden"
-                        style={{ backgroundColor: p.logo ? "#fff" : p.color }}
-                      >
-                        {p.logo ? (
-                          <img
-                            src={p.logo}
-                            alt={`${p.name} logo`}
-                            loading="lazy"
-                            className="w-full h-full object-contain p-1"
-                          />
-                        ) : (
-                          <span className="text-sm font-bold text-white">
-                            {p.initial}
-                          </span>
-                        )}
-                      </div>
+                      <PlatformLogo
+                        name={p.name}
+                        logo={p.logo}
+                        initial={p.initial}
+                        color={p.color}
+                        className="w-12 h-12"
+                        small
+                      />
                       <div>
                         <h3 className="text-sm font-semibold">{p.name}</h3>
                         <span className="font-mono text-xs text-primary">{p.handle}</span>

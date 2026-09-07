@@ -100,6 +100,17 @@ export default async function ProjectPage({
             </div>
           </div>
 
+          {project.coverImage ? (
+            <div className="rounded-xl overflow-hidden border border-border/50 bg-card/50 mb-10">
+              <img
+                src={project.coverImage}
+                alt={`${project.name} banner`}
+                className="w-full h-auto"
+                loading="lazy"
+              />
+            </div>
+          ) : null}
+
           <div className="flex flex-wrap gap-2 mb-10">
             {project.tech.map((t) => (
               <Badge key={t} variant="secondary" className="text-xs font-mono bg-primary/5 text-primary border-primary/20">
