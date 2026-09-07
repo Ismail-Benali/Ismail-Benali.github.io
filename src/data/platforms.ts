@@ -4,9 +4,11 @@ export interface Platform {
   url: string;
   color: string;
   description: string;
-  /** Rounded initial for the badge (no external logo dependency) */
+  /** Rounded initial for the badge (fallback when no logo) */
   initial: string;
   username: string;
+  /** Official site logo URL (favicon); when present it replaces the initial badge */
+  logo?: string;
 }
 
 export const PLATFORMS: Platform[] = [
@@ -19,6 +21,7 @@ export const PLATFORMS: Platform[] = [
     description:
       "Open-source projects, repositories, and the HELIOS-NET orchestrator.",
     initial: "GH",
+    logo: "https://github.githubassets.com/favicons/favicon.svg",
   },
   {
     name: "Hacker News",
@@ -28,6 +31,7 @@ export const PLATFORMS: Platform[] = [
     color: "#ff6600",
     description: "Community profile, submissions, and discussions on HN.",
     initial: "HN",
+    logo: "https://news.ycombinator.com/y18.svg",
   },
   {
     name: "Dev.to",
@@ -37,6 +41,7 @@ export const PLATFORMS: Platform[] = [
     color: "#0A0A23",
     description: "Developer articles, tutorials, and technical writing.",
     initial: "DEV",
+    logo: "https://media2.dev.to/dynamic/image/width=64,height=,fit=scale-down,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2F8j7kvp660rqzt99zui8e.png",
   },
   {
     name: "daily.dev",
@@ -46,6 +51,7 @@ export const PLATFORMS: Platform[] = [
     color: "#4B6BFB",
     description: "Developer news and reading-list profile.",
     initial: "dd",
+    logo: "https://daily.dev/favicon.png",
   },
   {
     name: "Sh3ll Cloud",

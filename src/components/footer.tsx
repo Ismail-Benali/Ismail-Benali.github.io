@@ -62,10 +62,21 @@ export function Footer() {
                     className="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-primary transition-colors"
                   >
                     <span
-                      className="inline-flex items-center justify-center w-5 h-5 rounded text-[8px] font-bold text-white"
-                      style={{ backgroundColor: p.color }}
+                      className="inline-flex items-center justify-center w-5 h-5 rounded overflow-hidden"
+                      style={{ backgroundColor: p.logo ? "#fff" : p.color }}
                     >
-                      {p.initial}
+                      {p.logo ? (
+                        <img
+                          src={p.logo}
+                          alt={`${p.name} logo`}
+                          loading="lazy"
+                          className="w-full h-full object-contain p-px"
+                        />
+                      ) : (
+                        <span className="text-[8px] font-bold text-white">
+                          {p.initial}
+                        </span>
+                      )}
                     </span>
                     {p.name}
                     <ArrowUpRight className="w-3 h-3" />
@@ -101,10 +112,14 @@ export function Footer() {
               aria-label="Hacker News"
             >
               <span
-                className="inline-flex items-center justify-center w-5 h-5 rounded text-[8px] font-bold text-white"
-                style={{ backgroundColor: "#ff6600" }}
+                className="inline-flex items-center justify-center w-5 h-5 rounded overflow-hidden bg-white"
               >
-                HN
+                <img
+                  src="https://news.ycombinator.com/y18.svg"
+                  alt="Hacker News logo"
+                  loading="lazy"
+                  className="w-full h-full object-contain p-px"
+                />
               </span>
             </a>
             <a

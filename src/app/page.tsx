@@ -224,10 +224,21 @@ export default async function Home() {
                   <Card className="bg-card/50 border-border/50 hover:border-primary/30 transition-all duration-300 hover:shadow-lg hover:shadow-primary/5 h-full">
                     <CardContent className="p-5 flex flex-col items-center text-center gap-3">
                       <div
-                        className="w-12 h-12 rounded-xl flex items-center justify-center text-sm font-bold text-white shadow-lg group-hover:scale-105 transition-transform"
-                        style={{ backgroundColor: p.color }}
+                        className="w-12 h-12 rounded-xl flex items-center justify-center shadow-lg group-hover:scale-105 transition-transform overflow-hidden"
+                        style={{ backgroundColor: p.logo ? "#fff" : p.color }}
                       >
-                        {p.initial}
+                        {p.logo ? (
+                          <img
+                            src={p.logo}
+                            alt={`${p.name} logo`}
+                            loading="lazy"
+                            className="w-full h-full object-contain p-1"
+                          />
+                        ) : (
+                          <span className="text-sm font-bold text-white">
+                            {p.initial}
+                          </span>
+                        )}
                       </div>
                       <div>
                         <h3 className="text-sm font-semibold">{p.name}</h3>

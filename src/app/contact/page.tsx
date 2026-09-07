@@ -53,10 +53,21 @@ export default function ContactPage() {
                 <Card className="bg-card/50 border-border/50 hover:border-primary/30 transition-all duration-300 hover:shadow-lg hover:shadow-primary/5">
                   <CardContent className="p-6 flex items-center gap-5">
                     <div
-                      className="w-12 h-12 rounded-xl flex items-center justify-center text-sm font-bold text-white shrink-0"
-                      style={{ backgroundColor: p.color }}
+                      className="w-12 h-12 rounded-xl flex items-center justify-center shrink-0 overflow-hidden"
+                      style={{ backgroundColor: p.logo ? "#fff" : p.color }}
                     >
-                      {p.initial}
+                      {p.logo ? (
+                        <img
+                          src={p.logo}
+                          alt={`${p.name} logo`}
+                          loading="lazy"
+                          className="w-full h-full object-contain p-1"
+                        />
+                      ) : (
+                        <span className="text-sm font-bold text-white">
+                          {p.initial}
+                        </span>
+                      )}
                     </div>
                     <div className="flex-1">
                       <h3 className="font-semibold mb-0.5">{p.name}</h3>
