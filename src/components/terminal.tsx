@@ -7,7 +7,7 @@ import { Card, CardContent } from "@/components/ui/card";
 export function InteractiveTerminal() {
   const [input, setInput] = useState("");
   const [history, setHistory] = useState<Array<{ type: "input" | "output"; text: string | React.ReactNode }>>([
-    { type: "output", text: "Welcome to H3l!0s_T3k Interactive Shell v2.6.0" },
+    { type: "output", text: "Welcome to H3l0s_T3k Interactive Shell v2.6.0" },
     { type: "output", text: "Type 'help' to see available commands." },
   ]);
   const bottomRef = useRef<HTMLDivElement>(null);
@@ -30,7 +30,7 @@ export function InteractiveTerminal() {
         output = "Available commands: whoami, about, projects, skills, contact, clear";
         break;
       case "whoami":
-        output = "Ismail-Benali (H3l!0s_T3k) - Cybersecurity Enthusiast & Developer";
+        output = "Ismail-Benali (H3l0s_T3k) - Cybersecurity Enthusiast & Developer";
         break;
       case "about":
         output = "Electrical Engineering student & security researcher bridging physical layers with advanced software tools.";

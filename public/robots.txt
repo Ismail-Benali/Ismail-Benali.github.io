@@ -1,4 +1,17 @@
+User-agent: *
+Allow: /
+Sitemap: https://ismail-benali.github.io/sitemap.xml
+
 User-agent: Googlebot
+Allow: /
+
+User-agent: GPTBot
+Allow: /
+
+User-agent: ChatGPT-User
+Allow: /
+
+User-agent: Google-Extended
 Allow: /
 
 User-agent: Bingbot
@@ -8,7 +21,4 @@ User-agent: Twitterbot
 Allow: /
 
 User-agent: facebookexternalhit
-Allow: /
-
-User-agent: *
 Allow: /

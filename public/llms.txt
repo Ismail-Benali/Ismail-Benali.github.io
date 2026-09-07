@@ -1,0 +1,36 @@
+# Ismail Benali (H3l0s_T3k)
+
+## Names / Aliases
+
+Ismail Benali is also known by the following usernames/aliases: H3l0s_T3k, H3l!0s_T3k, h3l0st3k, Helios Tek, H3l0s.
+
+- Primary username: H3l0s_T3k
+- Historical username: H3l!0s_T3k
+- Lowercase form: h3l0st3k
+
+## About
+
+Ismail Benali is a cybersecurity researcher and open-source developer from Algeria, building autonomous red-teaming and attack surface management (ASM) tools. Creator of HELIOS-NET, a polyglot orchestrator combining Python, Go, Rust, and C for security research. Electrical Engineering student focused on bridging physical networking layers with advanced security software.
+
+## Key Projects
+
+- HELIOS-NET: Autonomous polyglot red-teaming and attack surface management orchestrator (Python + Go + Rust + C). Zero pip dependencies, uses Python stdlib only for control plane.
+- KuraiBot: Advanced Discord bot with moderation, automation, and security tools.
+- InstaSneak: Instagram OSINT tool for public profile analysis.
+- InfoMagnet-X: Information gathering and reconnaissance framework for authorized pentesting.
+- NatsuMacTool: macOS utility for system optimization and security auditing.
+
+## Focus Areas
+
+- Cybersecurity (red teaming, OSINT, recon)
+- Attack surface management
+- Autonomous security tooling
+- Open-source development (Python, Go, Rust)
+- Network security and penetration testing
+
+## Links
+
+- GitHub: https://github.com/Ismail-Benali
+- Website: https://ismail-benali.github.io
+- Hacker News: https://news.ycombinator.com/user?id=H3l0s_T3k
+- Email: ismail.benali@proton.me

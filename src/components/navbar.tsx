@@ -1,48 +1,38 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { motion } from "framer-motion";
 import { Github, Terminal } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
-export type PageView = "home" | "blog" | "post";
-
 const NAV_ITEMS = [
-  { label: "Home", href: "#home", page: "home" as PageView },
-  { label: "About", href: "#about", page: "home" as PageView },
-  { label: "Projects", href: "#projects", page: "home" as PageView },
-  { label: "Blog", href: "", page: "blog" as PageView },
-  { label: "Skills", href: "#skills", page: "home" as PageView },
-  { label: "Contact", href: "#contact", page: "home" as PageView },
+  { label: "Home", href: "/" },
+  { label: "Projects", href: "/projects" },
+  { label: "Blog", href: "/blog" },
+  { label: "Platforms", href: "/platforms" },
+  { label: "Contact", href: "/contact" },
 ];
 
-export function Navbar({
-  currentView,
-  onNavigate,
-}: {
-  currentView: PageView;
-  onNavigate: (view: PageView, href?: string) => void;
-}) {
+export function Navbar() {
+  const pathname = usePathname();
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 20);
+    onScroll();
     window.addEventListener("scroll", onScroll);
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-  const handleNav = (page: PageView, href: string) => {
+  useEffect(() => {
     setMobileOpen(false);
-    if (page === "blog") {
-      onNavigate("blog");
-      window.scrollTo({ top: 0, behavior: "smooth" });
-    } else {
-      onNavigate("home");
-      const el = document.querySelector(href);
-      if (el) el.scrollIntoView({ behavior: "smooth" });
-    }
-  };
+  }, [pathname]);
+
+  const isActive = (href: string) =>
+    href === "/" ? pathname === "/" : pathname.startsWith(href);
 
   return (
     <motion.nav
@@ -57,35 +47,29 @@ export function Navbar({
     >
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
-          <button
-            onClick={() => {
-              onNavigate("home");
-              window.scrollTo({ top: 0, behavior: "smooth" });
-            }}
-            className="flex items-center gap-2 group"
-          >
+          <Link href="/" className="flex items-center gap-2 group">
             <div className="w-8 h-8 rounded-lg bg-primary/10 border border-primary/30 flex items-center justify-center group-hover:bg-primary/20 transition-colors">
               <Terminal className="w-4 h-4 text-primary" />
             </div>
             <span className="font-mono font-bold text-sm text-foreground">
-              H3l!0s_T3k
+              H3l0s_T3k
             </span>
-          </button>
+          </Link>
 
           {/* Desktop nav */}
           <div className="hidden md:flex items-center gap-1">
             {NAV_ITEMS.map((item) => (
-              <button
+              <Link
                 key={item.label}
-                onClick={() => handleNav(item.page, item.href)}
+                href={item.href}
                 className={`px-3 py-2 text-sm transition-colors rounded-md hover:bg-primary/5 ${
-                  currentView !== "home" && item.page === "blog"
+                  isActive(item.href)
                     ? "text-primary font-medium"
                     : "text-muted-foreground hover:text-primary"
                 }`}
               >
                 {item.label}
-              </button>
+              </Link>
             ))}
             <a href="https://github.com/Ismail-Benali" target="_blank" rel="noopener noreferrer">
               <Button variant="outline" size="sm" className="ml-2 gap-2">
@@ -132,17 +116,17 @@ export function Navbar({
         >
           <div className="px-4 py-4 space-y-2">
             {NAV_ITEMS.map((item) => (
-              <button
+              <Link
                 key={item.label}
-                onClick={() => handleNav(item.page, item.href)}
+                href={item.href}
                 className={`block w-full text-left px-3 py-2 text-sm transition-colors rounded-md ${
-                  currentView !== "home" && item.page === "blog"
+                  isActive(item.href)
                     ? "text-primary bg-primary/5"
                     : "text-muted-foreground hover:text-primary hover:bg-primary/5"
                 }`}
               >
                 {item.label}
-              </button>
+              </Link>
             ))}
             <a
               href="https://github.com/Ismail-Benali"

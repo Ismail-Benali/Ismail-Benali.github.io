@@ -1,28 +1,17 @@
 "use client";
 
-import type { PageView } from "@/components/navbar";
 import { Navbar } from "@/components/navbar";
 import { Footer } from "@/components/footer";
 import { BlogPostPage } from "@/components/blog-post-page";
 import { ReadingProgress } from "@/components/reading-progress";
 
 export default function PostRoute({ slug }: { slug: string }) {
-  const navigate = (page: PageView, href?: string) => {
-    if (page === "blog") {
-      window.location.href = "/";
-    } else if (href && href.startsWith("#")) {
-      window.location.href = `/${href}`;
-    } else {
-      window.location.href = "/";
-    }
-  };
-
   return (
     <div className="min-h-screen flex flex-col">
       <ReadingProgress />
-      <Navbar currentView="post" onNavigate={navigate} />
+      <Navbar />
       <main className="flex-1">
-        <BlogPostPage slug={slug} onBack={() => (window.location.href = "/")} />
+        <BlogPostPage slug={slug} onBack={() => (window.location.href = "/blog")} />
       </main>
       <Footer />
     </div>
